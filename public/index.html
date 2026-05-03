@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ҰБТ PEAK</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#f5f5f7;--s1:rgba(255,255,255,.82);--s2:rgba(255,255,255,.6);
+  --bd:rgba(0,0,0,.08);--bd2:rgba(0,0,0,.13);
+  --t1:#1d1d1f;--t2:#6e6e73;--t3:#aeaeb2;
+  --blue:#0071e3;--bluel:rgba(0,113,227,.1);
+  --green:#30d158;--greenl:rgba(48,209,88,.1);
+  --orange:#ff9f0a;--orangel:rgba(255,159,10,.1);
+  --red:#ff3b30;--redl:rgba(255,59,48,.1);
+  --purple:#bf5af2;--purplel:rgba(191,90,242,.1);
+  --teal:#5ac8fa;
+  --blur:blur(24px) saturate(1.8);
+  --r:16px;--r2:12px;
+  --sh:0 2px 16px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.04);
+  --sh2:0 8px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.06);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0b;--s1:rgba(28,28,30,.85);--s2:rgba(28,28,30,.6);
+  --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.13);
+  --t1:#f5f5f7;--t2:#98989d;--t3:#48484a;
+  --bluel:rgba(0,113,227,.18);
+  --greenl:rgba(48,209,88,.15);
+  --orangel:rgba(255,159,10,.15);
+  --redl:rgba(255,59,48,.15);
+  --purplel:rgba(191,90,242,.15);
+  --sh:0 2px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+  --sh2:0 8px 32px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.4);
+}
+[data-theme="dark"] html,[data-theme="dark"] body{background:var(--bg)}
+[data-theme="dark"] body::before{background:radial-gradient(ellipse 60% 40% at 20% -10%,rgba(0,113,227,.2),transparent),radial-gradient(ellipse 50% 35% at 80% 110%,rgba(191,90,242,.15),transparent)}
+[data-theme="dark"] .auth-card,[data-theme="dark"] .modal,[data-theme="dark"] .mbar,[data-theme="dark"] .dock{background:rgba(28,28,30,.9)}
+[data-theme="dark"] .a-inp,[data-theme="dark"] .m-inp,[data-theme="dark"] .qg-select,[data-theme="dark"] .qg-input{background:rgba(44,44,46,.8);color:var(--t1)}
+[data-theme="dark"] select option{background:#1c1c1e;color:#f5f5f7}
+
+/* THEME TOGGLE */
+.theme-toggle{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.06);border:.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .2s}
+[data-theme="dark"] .theme-toggle{background:rgba(255,255,255,.08)}
+.theme-toggle:hover{background:rgba(0,0,0,.1);transform:scale(1.1)}
+html{background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--t1);min-height:100vh;overflow-x:hidden;cursor:none}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% -10%,rgba(0,113,227,.14),transparent),radial-gradient(ellipse 50% 35% at 80% 110%,rgba(191,90,242,.09),transparent);pointer-events:none;z-index:0}
+
+/* CURSOR */
+#dot{position:fixed;width:6px;height:6px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s}
+#ring{position:fixed;width:24px;height:24px;border:1.5px solid rgba(0,113,227,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .22s,height .22s}
+
+/* AUTH */
+#auth-screen{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+#auth-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 30% 20%,rgba(0,113,227,.12),transparent),radial-gradient(ellipse 50% 40% at 70% 80%,rgba(191,90,242,.1),transparent)}
+.auth-card{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:24px;padding:40px 36px;width:380px;box-shadow:var(--sh2);position:relative;z-index:1}
+.auth-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;box-shadow:0 4px 20px rgba(0,113,227,.3)}
+.auth-tabs{display:flex;background:rgba(0,0,0,.05);border-radius:10px;padding:3px;margin-bottom:24px}
+.auth-tab{flex:1;text-align:center;padding:7px;border-radius:8px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .2s}
+.auth-tab.active{background:white;color:var(--t1);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.a-field{margin-bottom:14px}
+.a-label{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.4px}
+.a-inp{width:100%;padding:11px 14px;border-radius:12px;border:.5px solid var(--bd2);background:rgba(255,255,255,.7);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:var(--t1)}
+.a-inp:focus{border-color:var(--blue);background:white}
+.a-btn{width:100%;padding:13px;border-radius:980px;background:var(--blue);color:white;border:none;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:all .2s;box-shadow:0 4px 16px rgba(0,113,227,.35)}
+.a-btn:hover{background:#0077ed;transform:scale(1.02)}
+.a-err{font-size:12px;color:var(--red);text-align:center;margin-top:10px;min-height:18px}
+.a-hint{font-size:11px;color:var(--t3);text-align:center;margin-top:14px;line-height:1.6}
+
+/* ADMIN */
+#admin-screen{position:fixed;inset:0;z-index:700;background:var(--bg);overflow-y:auto;display:none}
+.adm-bar{background:rgba(245,245,247,.9);backdrop-filter:blur(20px);border-bottom:.5px solid var(--bd);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.adm-wrap{max-width:900px;margin:0 auto;padding:24px 20px 80px}
+.adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.astat{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.astat-n{font-size:28px;font-weight:700;letter-spacing:-1px}
+.astat-l{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.utbl{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.uth{display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr 1fr 80px;gap:0;padding:10px 18px;background:rgba(0,0,0,.03);border-bottom:.5px solid var(--bd)}
+.uth span{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.utr{display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr 1fr 80px;gap:0;padding:12px 18px;border-bottom:.5px solid var(--bd);align-items:center;transition:background .15s}
+.utr:last-child{border-bottom:none}
+.utr:hover{background:rgba(0,0,0,.02)}
+.ut-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.ut-del{background:var(--redl);color:var(--red);border:none;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.ut-del:hover{background:var(--red);color:white}
+
+/* MAIN APP */
+#main-app{display:none}
+.mbar{height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:100;background:rgba(245,245,247,.88);backdrop-filter:blur(20px);border-bottom:.5px solid var(--bd)}
+.mb-l{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:500}
+.mb-r{display:flex;align-items:center;gap:10px}
+.mb-user{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;cursor:pointer;padding:3px 10px;border-radius:100px;transition:background .2s}
+.mb-user:hover{background:rgba(0,0,0,.06)}
+.mb-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1}
+.hero{padding:32px 0 20px;text-align:center}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:14px;box-shadow:var(--sh)}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+.hero-title{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;margin-bottom:8px;background:linear-gradient(135deg,var(--t1),#6e6e73);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--t2);margin-bottom:22px}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+
+.sec{display:none;animation:secIn .35s cubic-bezier(.25,.46,.45,.94)}
+.sec.active{display:block}
+@keyframes secIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* UTILS */
+.card{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.cp{padding:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.pill-blue{background:var(--bluel);color:var(--blue)}
+.pill-green{background:var(--greenl);color:#1a7f3c}
+.pill-orange{background:var(--orangel);color:#8f5700}
+.pill-purple{background:var(--purplel);color:#6e2f8c}
+.pill-red{background:var(--redl);color:var(--red)}
+.prog{height:4px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden;margin-top:8px}
+.pf{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.25,.46,.45,.94)}
+.pb{background:linear-gradient(90deg,var(--blue),var(--teal))}
+.pg{background:var(--green)}
+.pp{background:linear-gradient(90deg,var(--purple),#ff375f)}
+.stat-n{font-size:28px;font-weight:700;letter-spacing:-1px}
+.stat-l{font-size:11px;font-weight:500;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+.seg{display:flex;background:rgba(0,0,0,.05);border-radius:10px;padding:3px;margin-bottom:20px;width:fit-content}
+.seg-b{padding:6px 18px;border-radius:8px;font-size:13px;font-weight:500;color:var(--t2);background:transparent;border:none;cursor:pointer;transition:all .2s}
+.seg-b.active{background:white;color:var(--t1);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.btn-p{background:var(--blue);color:white;border:none;padding:9px 20px;border-radius:980px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;box-shadow:0 3px 12px rgba(0,113,227,.3)}
+.btn-p:hover{background:#0077ed;transform:scale(1.03)}
+.btn-s{background:var(--s1);border:.5px solid var(--bd2);color:var(--t1);padding:9px 20px;border-radius:980px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;box-shadow:var(--sh)}
+.btn-s:hover{background:white;transform:scale(1.02)}
+
+/* DOCK */
+.dock{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:flex-end;gap:6px;padding:8px 12px;background:rgba(255,255,255,.72);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:24px;box-shadow:var(--sh2)}
+.di{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);position:relative}
+.di:hover{transform:scale(1.35) translateY(-6px)}
+.di.active::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--t2)}
+.dtt{position:absolute;bottom:52px;left:50%;transform:translateX(-50%) scale(0);background:rgba(28,28,30,.92);color:white;font-size:11px;font-weight:500;padding:4px 10px;border-radius:8px;white-space:nowrap;transition:transform .15s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.di:hover .dtt{transform:translateX(-50%) scale(1)}
+.dsep{width:.5px;height:30px;background:var(--bd2);margin:0 2px}
+
+/* WEEK CARDS */
+.wcard{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:10px;transition:all .25s}
+.wcard:hover{box-shadow:var(--sh2)}
+.wc-hdr{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.wc-hdr:hover{background:rgba(0,0,0,.015)}
+.wc-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.wc-info{flex:1}
+.wc-title{font-size:15px;font-weight:600;letter-spacing:-.2px}
+.wc-sub{font-size:12px;color:var(--t2);margin-top:1px}
+.wc-chev{color:var(--t3);font-size:12px;transition:transform .25s;font-style:normal}
+.wcard.open .wc-chev{transform:rotate(90deg)}
+.wc-body{display:none;padding:0 20px 20px}
+.wcard.open .wc-body{display:block;animation:secIn .2s ease}
+.wc-prog{height:2px;background:rgba(0,0,0,.06);margin:0 20px;border-radius:2px;overflow:hidden}
+.wc-pf{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .6s ease}
+.itabs{display:flex;border-bottom:.5px solid var(--bd);margin-bottom:14px}
+.itab{font-size:12px;font-weight:500;color:var(--t3);padding:8px 14px;cursor:pointer;border-bottom:1.5px solid transparent;margin-bottom:-.5px;transition:all .2s}
+.itab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.itc{display:none}
+.itc.active{display:block;animation:secIn .15s ease}
+.sr{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;transition:background .15s}
+.sr:hover{background:rgba(0,0,0,.025)}
+.sd{font-size:12px;font-weight:500;color:var(--t2);min-width:28px}
+.trow{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:10px;transition:background .15s}
+.trow:hover{background:rgba(0,0,0,.025)}
+.tck{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bd2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tck.done{background:var(--blue);border-color:var(--blue)}
+.tck.done::after{content:'✓';font-size:9px;color:white;font-weight:700}
+.tnm{flex:1;background:transparent;border:none;font-size:13px;color:var(--t1);outline:none;font-family:inherit}
+.tnm.done{color:var(--t3);text-decoration:line-through}
+.tnm::placeholder{color:var(--t3)}
+.addbtn{width:100%;display:flex;align-items:center;gap:8px;padding:7px 12px;background:transparent;border:1.5px dashed rgba(0,0,0,.1);border-radius:10px;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;margin-top:6px;transition:all .2s;text-align:left}
+.addbtn:hover{border-color:var(--blue);color:var(--blue);background:var(--bluel)}
+.mi{padding:12px 14px;background:rgba(0,0,0,.025);border-radius:12px;margin-bottom:6px;border-left:3px solid var(--blue)}
+.note-ta{width:100%;background:rgba(0,0,0,.025);border:.5px solid var(--bd);border-radius:12px;padding:10px 12px;font-size:12px;font-family:inherit;color:var(--t1);outline:none;resize:vertical;min-height:80px;line-height:1.7;transition:border-color .2s}
+.note-ta:focus{border-color:var(--blue)}
+
+/* HABITS */
+.hcard{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:10px;transition:all .2s}
+.hcard:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.hc-top{display:flex;align-items:center;gap:12px;padding:14px 18px}
+.h-ico{font-size:24px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.04);border-radius:12px;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.h-ico:hover{transform:scale(1.15)}
+.h-ni{flex:1;background:transparent;border:none;font-size:14px;font-weight:500;color:var(--t1);outline:none;font-family:inherit}
+.h-ni::placeholder{color:var(--t3)}
+.h-streak{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--orangel);color:#8f5700;white-space:nowrap}
+.h-del{background:none;border:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--t3);cursor:pointer;font-size:14px;transition:all .2s}
+.h-del:hover{background:var(--redl);color:var(--red)}
+.dg{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:0 18px 16px}
+.dw{display:flex;flex-direction:column;align-items:center;gap:4px}
+.dl{font-size:10px;font-weight:600;color:var(--t3)}
+.db{width:100%;aspect-ratio:1;border-radius:50%;background:rgba(0,0,0,.04);border:none;cursor:pointer;transition:all .2s cubic-bezier(.34,1.2,.64,1);display:flex;align-items:center;justify-content:center}
+.db:hover{background:rgba(0,0,0,.08);transform:scale(1.1)}
+.db.done{background:var(--blue);box-shadow:0 3px 10px rgba(0,113,227,.35)}
+.db.done::after{content:'✓';font-size:11px;font-weight:700;color:white}
+
+/* TIMER */
+.tm-main{width:64px;height:64px;border-radius:50%;background:var(--blue);border:none;color:white;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(0,113,227,.4);transition:all .2s cubic-bezier(.34,1.2,.64,1)}
+.tm-main:hover{transform:scale(1.08)}
+.tm-cb{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.05);border:.5px solid var(--bd);font-size:16px;cursor:pointer;transition:all .2s}
+
+/* STATS CHART */
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar-val{font-size:10px;font-weight:600;color:var(--t2)}
+.bar-body{width:100%;background:linear-gradient(to top,var(--blue),var(--teal));border-radius:6px 6px 3px 3px;transition:height .6s cubic-bezier(.25,.46,.45,.94);min-height:4px}
+.bar-lbl{font-size:9px;color:var(--t3);font-weight:500}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.ach{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r2);padding:16px 12px;text-align:center;box-shadow:var(--sh);transition:all .2s;position:relative}
+.ach:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.ach.locked{opacity:.4;filter:grayscale(1)}
+.ach-ico{font-size:32px;margin-bottom:8px;display:block}
+.ach-name{font-size:11px;font-weight:600}
+.ach-desc{font-size:10px;color:var(--t3);margin-top:2px;line-height:1.4}
+.xp-wrap{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);padding:16px 20px;margin-bottom:12px;box-shadow:var(--sh)}
+.xp-badge{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--orange),#ff375f);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 12px rgba(255,159,10,.3)}
+
+/* LO-FI */
+.lofi-bar{width:5px;border-radius:3px;background:linear-gradient(to top,var(--blue),var(--purple));animation:lofiBar 1s ease-in-out infinite}
+@keyframes lofiBar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.lofi-btn{width:40px;height:40px;border-radius:50%;border:.5px solid var(--bd);background:var(--s1);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.lofi-btn:hover{background:white;transform:scale(1.1)}
+.lofi-btn.main-b{width:52px;height:52px;background:var(--blue);border:none;box-shadow:0 4px 16px rgba(0,113,227,.4)}
+.lofi-btn.main-b:hover{background:#0077ed}
+
+/* ══════════════════ MATERIALS ══════════════════ */
+.lib-layout{display:grid;grid-template-columns:240px 1fr;gap:16px;min-height:70vh}
+.lib-sidebar{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);padding:16px;display:flex;flex-direction:column;gap:4px;max-height:75vh;overflow-y:auto}
+.lib-main{display:flex;flex-direction:column;gap:12px}
+.f-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:background .15s}
+.f-item:hover{background:rgba(0,0,0,.04)}
+.f-item.active{background:var(--bluel)}
+.f-item-ico{font-size:18px;width:26px;text-align:center}
+.f-item-name{font-size:13px;font-weight:500;flex:1}
+.f-item-cnt{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;background:rgba(0,0,0,.06);color:var(--t2)}
+.lib-sb-sec{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px 4px;margin-top:4px}
+.lib-add-folder{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1.5px dashed rgba(0,0,0,.1);background:transparent;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;width:100%;margin-top:6px;transition:all .2s;text-align:left}
+.lib-add-folder:hover{border-color:var(--blue);color:var(--blue);background:var(--bluel)}
+
+/* FILE GRID */
+.file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.fcard{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px;cursor:pointer;transition:all .2s;box-shadow:var(--sh);position:relative;overflow:hidden}
+.fcard:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.fcard-strip{position:absolute;top:0;left:0;right:0;height:3px}
+.fcard-ico{font-size:26px;margin-bottom:8px}
+.fcard-title{font-size:12px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fcard-meta{font-size:10px;color:var(--t2)}
+.fcard-del{position:absolute;top:7px;right:7px;width:20px;height:20px;border-radius:50%;background:var(--redl);color:var(--red);border:none;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.fcard:hover .fcard-del{display:flex}
+.fcard-type{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;margin-top:5px}
+
+/* FILE VIEW */
+.file-view{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.fv-header{padding:16px 20px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:12px}
+.fv-back{background:rgba(0,0,0,.05);border:none;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.fv-back:hover{background:rgba(0,0,0,.1)}
+.fv-title-inp{flex:1;background:transparent;border:none;font-size:16px;font-weight:600;color:var(--t1);outline:none;font-family:inherit}
+.fv-body{padding:20px;min-height:300px}
+.fv-ta{width:100%;min-height:260px;background:transparent;border:none;outline:none;font-size:14px;font-family:inherit;color:var(--t1);line-height:1.8;resize:none}
+.fv-ta::placeholder{color:var(--t3)}
+.fv-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;border-top:.5px solid var(--bd);background:rgba(0,0,0,.02)}
+.fv-stat{font-size:11px;color:var(--t3)}
+.toolbar{display:flex;align-items:center;gap:6px;padding:10px 20px;background:rgba(0,0,0,.02);border-bottom:.5px solid var(--bd);flex-wrap:wrap}
+.tb-btn{padding:4px 10px;border-radius:7px;border:.5px solid var(--bd);background:white;font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;color:var(--t1)}
+.tb-btn:hover{background:var(--bluel);border-color:var(--blue);color:var(--blue)}
+
+/* PDF VIEWER */
+.pdf-viewer{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.pdf-toolbar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:.5px solid var(--bd);background:rgba(0,0,0,.02);flex-wrap:wrap}
+.pdf-nav-btn{padding:5px 14px;border-radius:8px;border:.5px solid var(--bd);background:white;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.pdf-nav-btn:hover{background:var(--bluel);border-color:var(--blue)}
+.pdf-page-inp{width:50px;padding:4px 8px;border-radius:8px;border:.5px solid var(--bd2);text-align:center;font-size:12px;font-weight:600;outline:none;background:white}
+.pdf-canvas-wrap{overflow:auto;max-height:65vh;display:flex;justify-content:center;padding:16px;background:rgba(0,0,0,.04)}
+.pdf-canvas-wrap canvas{border-radius:4px;box-shadow:var(--sh2)}
+.pdf-thumb-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;border-top:.5px solid var(--bd)}
+.pdf-thumb{cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid transparent;transition:all .2s;flex-shrink:0}
+.pdf-thumb:hover{border-color:rgba(0,113,227,.4)}
+.pdf-thumb.active-pg{border-color:var(--blue)}
+
+/* PDF UPLOAD */
+.pdf-drop{border:2px dashed rgba(0,0,0,.12);border-radius:var(--r);padding:40px;text-align:center;transition:all .2s;cursor:pointer;background:rgba(0,0,0,.02)}
+.pdf-drop:hover,.pdf-drop.drag{border-color:var(--blue);background:var(--bluel)}
+.pdf-drop-ico{font-size:48px;margin-bottom:12px}
+.pdf-drop-title{font-size:16px;font-weight:600;margin-bottom:6px}
+.pdf-drop-sub{font-size:13px;color:var(--t2)}
+
+/* QUIZ */
+.q-card{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);padding:28px;box-shadow:var(--sh);margin-bottom:16px;animation:secIn .3s ease}
+.q-text{font-size:18px;font-weight:600;letter-spacing:-.3px;line-height:1.5;margin-bottom:24px}
+.q-opts{display:flex;flex-direction:column;gap:10px}
+.q-opt{padding:14px 18px;border-radius:12px;border:1.5px solid var(--bd);background:rgba(255,255,255,.7);cursor:pointer;font-size:14px;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:12px}
+.q-opt:hover:not(.disabled){border-color:var(--blue);background:var(--bluel);transform:translateX(4px)}
+.q-opt.correct{border-color:var(--green);background:var(--greenl);color:#1a7f3c}
+.q-opt.wrong{border-color:var(--red);background:var(--redl);color:var(--red)}
+.q-opt.disabled{cursor:default}
+.opt-l{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .2s}
+.q-opt.correct .opt-l{background:var(--green);color:white}
+.q-opt.wrong .opt-l{background:var(--red);color:white}
+.q-explain{background:rgba(48,209,88,.08);border:.5px solid rgba(48,209,88,.25);border-radius:12px;padding:14px;margin-top:14px;font-size:13px;color:#1a7f3c;line-height:1.6;display:none}
+.q-explain.show{display:block;animation:secIn .2s ease}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal-bg.hidden{display:none}
+.modal{background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:20px;padding:28px;width:360px;box-shadow:var(--sh2)}
+.m-inp{width:100%;padding:10px 14px;border-radius:10px;border:.5px solid var(--bd2);background:rgba(255,255,255,.8);font-size:14px;font-family:inherit;color:var(--t1);outline:none;transition:border-color .2s;margin-bottom:12px}
+.m-inp:focus{border-color:var(--blue)}
+.ep-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ep-o{font-size:20px;padding:6px;border-radius:8px;cursor:pointer;transition:background .15s;border:1.5px solid transparent}
+.ep-o:hover{background:rgba(0,0,0,.06)}
+.ep-o.sel{border-color:var(--blue);background:var(--bluel)}
+.cp-row{display:flex;gap:8px;margin-bottom:12px}
+.cp-o{width:24px;height:24px;border-radius:50%;cursor:pointer;transition:transform .2s;border:2px solid transparent}
+.cp-o:hover{transform:scale(1.2)}
+.cp-o.sel{border-color:var(--t1);transform:scale(1.15)}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(28,28,30,.92);color:white;padding:10px 20px;border-radius:980px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:all .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+</style>
+</head>
+<body>
+<div id="dot"></div><div id="ring"></div>
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="auth-icon">🏔</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.5px;margin-top:10px">ҰБТ PEAK</div>
+      <div style="font-size:13px;color:var(--t2);margin-top:4px">Грантқа апаратын жол</div>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="authTab('login',this)">Кіру</div>
+      <div class="auth-tab" onclick="authTab('reg',this)">Тіркелу</div>
+    </div>
+    <div id="at-login">
+      <div class="a-field"><label class="a-label">Логин</label><input class="a-inp" id="li-u" placeholder="логин" autocomplete="username"></div>
+      <div class="a-field"><label class="a-label">Пароль</label><input class="a-inp" id="li-p" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="a-btn" onclick="doLogin()">Кіру →</button>
+    </div>
+    <div id="at-reg" style="display:none">
+      <div class="a-field"><label class="a-label">Аты</label><input class="a-inp" id="rg-n" placeholder="Мысалы: Сырым"></div>
+      <div class="a-field"><label class="a-label">Логин</label><input class="a-inp" id="rg-u" placeholder="кіші əріппен"></div>
+      <div class="a-field"><label class="a-label">Email</label><input class="a-inp" id="rg-e" type="email" placeholder="email@example.com"></div>
+      <div class="a-field"><label class="a-label">Пароль</label><input class="a-inp" id="rg-p" type="password" placeholder="минимум 6 символ" autocomplete="new-password"></div>
+      <button class="a-btn" onclick="doReg()">Тіркелу →</button>
+    </div>
+    <div class="a-err" id="a-err"></div>
+    <div class="a-hint"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="adm-bar">
+    <div style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px">🛡 Əкімші панелі <span class="pill pill-red">ADMIN</span></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-s" onclick="showAdmin(false)" style="font-size:12px;padding:6px 16px">← Сайтқа</button>
+      <button class="btn-s" onclick="doLogout()" style="font-size:12px;padding:6px 16px;color:var(--red)">Шығу</button>
+    </div>
+  </div>
+  <div class="adm-wrap">
+    <div class="adm-stats" id="adm-stats"></div>
+    <div style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:12px">👥 Пайдаланушылар</div>
+    <div class="utbl"><div class="uth"><span>Пайдаланушы</span><span>Email</span><span>Рөл</span><span>XP</span><span>Тіркелді</span><span>Əрекет</span></div><div id="users-list"></div></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app">
+  <div class="mbar">
+    <div class="mb-l">
+      <span style="font-size:13px">🍎</span>
+      <span style="font-size:13px;font-weight:700;letter-spacing:-.3px">ҰБТ PEAK</span>
+      <span style="font-size:12px;color:var(--t2);cursor:pointer" id="admin-link" onclick="goAdmin()" style="display:none">Əкімші</span>
+    </div>
+    <div class="mb-r">
+      <span style="font-size:12px;font-weight:500;color:var(--t2)" id="mbtime"></span>
+      <div class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Тема ауыстыру">☀️</div>
+      <div class="mb-user" onclick="doLogout()">
+        <div class="mb-av" id="mb-av"></div>
+        <span id="mb-un"></span>
+        <span style="font-size:10px;color:var(--t3)">· Шығу</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-chip"><span class="chip-dot"></span><span id="hero-greet">Сəлем!</span></div>
+      <div class="hero-title">Грантқа апаратын жол</div>
+      <div class="hero-sub">Математика · Тарих · Информатика · ҰБТ 2026</div>
+      <div class="hero-btns">
+        <button class="btn-p" onclick="sw('peak')">🗺 Жол картасы</button>
+
+        <button class="btn-s" onclick="sw('habits')">💪 Əдеттер</button>
+        <button class="btn-s" onclick="sw('timer')">⏱ Таймер</button>
+        <button class="btn-s" onclick="sw('stats')">📊 Статистика</button>
+        <button class="btn-s" onclick="sw('ach')">🏅 Жетістіктер</button>
+      </div>
+    </div>
+
+    <!-- PEAK -->
+    <div class="sec active" id="app-peak">
+      <div class="g2">
+        <div class="card cp">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">1-ші ҰБТ</span><span class="pill pill-blue">3 Маусым</span></div>
+          <div style="font-size:48px;font-weight:700;letter-spacing:-2px;line-height:1;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="d1">—</div>
+          <div style="font-size:12px;color:var(--t2)">күн қалды</div>
+          <div class="prog"><div class="pf pb" id="cf1" style="width:0%"></div></div>
+        </div>
+        <div class="card cp">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">2-ші ҰБТ</span><span class="pill pill-purple">25 Маусым</span></div>
+          <div style="font-size:48px;font-weight:700;letter-spacing:-2px;line-height:1;background:linear-gradient(135deg,var(--purple),#ff375f);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="d2">—</div>
+          <div style="font-size:12px;color:var(--t2)">күн қалды</div>
+          <div class="prog"><div class="pf pp" id="cf2" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="card cp" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="position:relative;width:64px;height:64px;flex-shrink:0">
+            <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="5"/>
+              <circle cx="32" cy="32" r="26" fill="none" id="prog-arc" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4" stroke="url(#rg)" style="transition:stroke-dashoffset .8s ease"/>
+              <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0071e3"/><stop offset="100%" stop-color="#bf5af2"/></linearGradient></defs>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--blue)" id="prog-pct">0%</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:600;letter-spacing:-.3px;margin-bottom:2px">Жалпы прогресс</div>
+            <div style="font-size:12px;color:var(--t2)">Барлық аялдамалардағы тақырыптар</div>
+            <div class="prog" style="margin-top:10px"><div class="pf pb" id="total-fill" style="width:0%"></div></div>
+          </div>
+          <div style="text-align:right"><div style="font-size:11px;color:var(--t3);margin-bottom:4px">Аяқталды</div><div style="font-size:22px;font-weight:700;letter-spacing:-.5px" id="done-cnt">0/0</div></div>
+        </div>
+      </div>
+      <div id="weeks-list"></div>
+
+      <!-- ЖАҢА АПТА ҚОС -->
+      <div style="margin-bottom:12px">
+        <button id="add-week-btn" onclick="addCustomWeek()" style="width:100%;padding:14px;border-radius:var(--r);border:1.5px dashed var(--bd2);background:transparent;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px" onmouseenter="this.style.borderColor='var(--blue)';this.style.color='var(--blue)';this.style.background='var(--bluel)'" onmouseleave="this.style.borderColor='var(--bd2)';this.style.color='var(--t2)';this.style.background='transparent'">
+          ＋ Жаңа апта қос
+        </button>
+      </div>
+
+      <!-- CUSTOM WEEK MODAL -->
+      <div class="modal-bg hidden" id="week-modal">
+        <div class="modal" style="width:420px">
+          <div style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:20px">📅 Жаңа апта қосу</div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Апта атауы</div>
+            <input class="m-inp" id="wm-title" placeholder="Мысалы: Бесінші аялдама" style="margin:0">
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Мерзімі</div>
+            <input class="m-inp" id="wm-dates" placeholder="Мысалы: 26 Мамыр – 1 Маусым" style="margin:0">
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Фокус</div>
+            <input class="m-inp" id="wm-focus" placeholder="Мысалы: Финалдық қайталау" style="margin:0">
+          </div>
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Белгіше</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap" id="wm-emojis">
+              ${['🎯','🔥','⭐','💡','🚀','📚','🏆','💎','🌙','⚡'].map(e=>`<div class="ep-o" onclick="selWEmoji('${e}',this)" style="font-size:22px;padding:6px 10px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;transition:all .2s">${e}</div>`).join('')}
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn-s" onclick="closeWeekModal()">Болдырмау</button>
+            <button class="btn-p" onclick="saveCustomWeek()">Қосу</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(0,113,227,.08),rgba(191,90,242,.08));border:.5px solid rgba(0,113,227,.2);border-radius:var(--r);padding:28px;text-align:center;position:relative;overflow:hidden;margin-top:12px">
+        <div style="position:absolute;inset:0;background:var(--s1);backdrop-filter:var(--blur);z-index:-1"></div>
+        <span style="font-size:44px;animation:float 4s ease-in-out infinite;display:block;margin:0 auto 12px">🏔</span>
+        <div style="font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px">Грант · Шың</div>
+        <div style="font-size:13px;color:var(--t2)">Математика · Тарих · Информатика · ҰБТ 2026</div>
+      </div>
+    </div>
+
+    <!-- LIBRARY -->
+    <div class="sec" id="app-lib">
+      <!-- Folder Modal -->
+      <div class="modal-bg hidden" id="folder-modal">
+        <div class="modal">
+          <div style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:18px">📁 Жаңа папка</div>
+          <input class="m-inp" id="fn-name" placeholder="Папка атауы...">
+          <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Белгіше</div>
+          <div class="ep-row" id="ep-row"></div>
+          <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Түс</div>
+          <div class="cp-row" id="cp-row"></div>
+          <select class="m-inp" id="fn-subj"><option value="mat">📐 Математика</option><option value="his">📜 Тарих</option><option value="inf">💻 Информатика</option><option value="gen">📚 Жалпы</option></select>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn-s" onclick="closeFolderModal()">Болдырмау</button>
+            <button class="btn-p" onclick="createFolder()">Жасау</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.5px">📚 Материалдар</div>
+        <div style="display:flex;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.05);border-radius:100px;padding:6px 14px"><span>🔍</span><input id="lib-search" placeholder="Іздеу..." style="background:transparent;border:none;outline:none;font-size:13px;color:var(--t1);width:140px;font-family:inherit" oninput="libSearch(this.value)"></div>
+  
+        </div>
+      </div>
+
+      <div class="lib-layout">
+        <div class="lib-sidebar">
+          <div style="font-size:13px;font-weight:600;letter-spacing:-.2px;margin-bottom:8px;color:var(--t2)">Папкалар</div>
+          <div class="f-item" onclick="showAllFiles()" id="fi-all"><span class="f-item-ico">🗂</span><span class="f-item-name">Барлығы</span><span class="f-item-cnt" id="all-cnt">0</span></div>
+          <div id="folder-sb-list"></div>
+          <button class="lib-add-folder" onclick="openFolderModal()">＋ Жаңа папка</button>
+        </div>
+        <div class="lib-main">
+          <div id="lib-folder-view">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+              <div>
+                <div style="font-size:18px;font-weight:700;letter-spacing:-.3px" id="lib-fv-title">Барлық материалдар</div>
+                <div style="font-size:12px;color:var(--t2);margin-top:2px" id="lib-fv-sub"></div>
+              </div>
+              <div style="display:flex;gap:8px" id="lib-fv-btns">
+                <button class="btn-p" onclick="newTextFile()" id="btn-new-txt">+ Мəтін</button>
+                <button class="btn-s" onclick="openPdfPicker()">+ PDF</button>
+                <input type="file" id="pdf-inp" accept=".pdf" style="display:none" onchange="uploadPDF(event)">
+              </div>
+            </div>
+            <div class="file-grid" id="file-grid"></div>
+            <div id="lib-empty" style="text-align:center;padding:60px 20px;display:none">
+              <div style="font-size:48px;margin-bottom:12px">📂</div>
+              <div style="font-size:16px;font-weight:600;margin-bottom:6px">Бос папка</div>
+              <div style="font-size:13px;color:var(--t2);margin-bottom:20px">Материал немесе PDF қосыңыз</div>
+              <div style="display:flex;gap:10px;justify-content:center">
+                <button class="btn-p" onclick="newTextFile()">+ Мəтін қос</button>
+                <button class="btn-s" onclick="openPdfPicker()">+ PDF жүктеу</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEXT FILE VIEW -->
+          <div id="lib-file-view" style="display:none">
+            <div class="file-view">
+              <div class="fv-header">
+                <button class="fv-back" onclick="closeFileView()">←</button>
+                <input class="fv-title-inp" id="fv-title-inp" placeholder="Материал атауы..." onchange="saveTextFile()">
+                <button class="btn-s" style="font-size:12px;padding:6px 14px" onclick="quizFromFile()">⚡ Quiz</button>
+                <button class="btn-p" style="font-size:12px;padding:6px 14px" onclick="saveTextFile()">Сақтау</button>
+              </div>
+              <div class="toolbar">
+                <span style="font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px">Форматтау:</span>
+                <button class="tb-btn" onclick="insT('**','**')"><b>B</b></button>
+                <button class="tb-btn" onclick="insT('*','*')"><i>I</i></button>
+                <button class="tb-btn" onclick="insT('\n## ','')">H2</button>
+                <button class="tb-btn" onclick="insT('\n• ','')">• Тізім</button>
+                <button class="tb-btn" onclick="insT('\n→ ','')">→</button>
+                <button class="tb-btn" onclick="insT('\n⚡ ','')">⚡</button>
+                <button class="tb-btn" onclick="insT('\n📌 ','')">📌</button>
+                <button class="tb-btn" onclick="insT('\nСұрақ: \nЖауап: ','')">Q&A</button>
+              </div>
+              <div class="fv-body">
+                <textarea class="fv-ta" id="fv-ta" placeholder="Материалды осында жазыңыз...&#10;&#10;⚡ Маңызды | 📌 Ескерту | → Байланыс | • Тізім&#10;&#10;Quiz үшін:&#10;Сұрақ: Сұрағыңыз&#10;Жауап: Жауабыңыз" oninput="onTAChange()" onchange="saveTextFile()"></textarea>
+              </div>
+              <div class="fv-footer">
+                <span class="fv-stat" id="fv-wc">0 сөз</span>
+                <span style="font-size:12px;color:var(--t3)">·</span>
+                <span class="fv-stat" id="fv-cc">0 символ</span>
+                <div style="flex:1"></div>
+                <span style="font-size:12px;color:var(--green)" id="fv-saved"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PDF VIEWER -->
+          <div id="lib-pdf-view" style="display:none">
+            <div class="pdf-viewer">
+              <div class="pdf-toolbar">
+                <button class="fv-back" onclick="closePDFView()">←</button>
+                <div style="font-size:13px;font-weight:600;flex:1" id="pdf-name">PDF</div>
+                <button class="pdf-nav-btn" onclick="pdfPrev()">‹ Алдыңғы</button>
+                <div style="display:flex;align-items:center;gap:6px;font-size:13px">
+                  <input class="pdf-page-inp" id="pdf-page-inp" type="number" min="1" onchange="goToPage(parseInt(this.value))">
+                  <span style="color:var(--t2)">/</span>
+                  <span id="pdf-total-pages" style="font-weight:600;color:var(--t2)">—</span>
+                </div>
+                <button class="pdf-nav-btn" onclick="pdfNext()">Келесі ›</button>
+                <button class="pdf-nav-btn" onclick="pdfZoomIn()">🔍+</button>
+                <button class="pdf-nav-btn" onclick="pdfZoomOut()">🔍-</button>
+                <button class="btn-s" style="font-size:12px;padding:5px 14px" onclick="quizFromPDF()">⚡ Quiz</button>
+              </div>
+              <div class="pdf-canvas-wrap" id="pdf-canvas-wrap">
+                <canvas id="pdf-canvas"></canvas>
+              </div>
+              <div class="pdf-thumb-row" id="pdf-thumb-row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- HABITS -->
+    <div class="sec" id="app-habits">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.5px">Əдеттер</div>
+        <button class="btn-p" onclick="addHabit()" style="font-size:13px;padding:8px 18px">+ Əдет</button>
+      </div>
+      <div class="g3" style="margin-bottom:12px">
+        <div class="card cp"><div class="stat-n" id="hs-today">0/0</div><div class="stat-l">Бүгін</div></div>
+        <div class="card cp"><div class="stat-n" id="hs-week">0</div><div class="stat-l">Апта</div></div>
+        <div class="card cp"><div class="stat-n" id="hs-str">0🔥</div><div class="stat-l">Streak</div></div>
+      </div>
+      <div class="card cp" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:6px"><span>Бүгінгі прогресс</span><span id="h-pct" style="font-weight:600;color:var(--blue)">0%</span></div>
+        <div class="prog"><div class="pf pb" id="h-fill" style="width:0%"></div></div>
+      </div>
+      <div id="habits-list"></div>
+      <div class="modal-bg hidden" id="epk" onclick="if(event.target===this)closeEP()">
+        <div style="background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:20px;padding:16px;box-shadow:var(--sh2);max-width:280px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px;text-align:center;color:var(--t2)">Эмодзи таңда</div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px" id="epk-g"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMER -->
+    <div class="sec" id="app-timer">
+      <div style="display:flex;gap:8px;margin-bottom:16px" id="phase-bar"></div>
+      <div class="card cp" style="margin-bottom:12px;text-align:center">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px">
+          <span class="pill" id="tm-pill" style="font-size:12px;padding:5px 16px"></span>
+          <span style="font-size:12px;color:var(--t2)" id="tm-rlbl"></span>
+        </div>
+        <div style="position:relative;width:200px;height:200px;margin:0 auto 24px">
+          <svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(-90deg)">
+            <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="10"/>
+            <circle cx="100" cy="100" r="88" fill="none" id="tm-ring" stroke-width="10" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="0" style="transition:stroke-dashoffset .5s ease,stroke .4s ease"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <div style="font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums" id="tm-disp">25:00</div>
+            <div style="font-size:12px;color:var(--t2);margin-top:4px" id="tm-sub2">Дайынсың ба?</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <button class="tm-cb" onclick="tmPrev()">⏮</button>
+          <button class="tm-main" id="tm-btn" onclick="tmToggle()">▶</button>
+          <button class="tm-cb" onclick="tmNext()">⏭</button>
+          <button class="tm-cb" onclick="tmReset()">↺</button>
+        </div>
+      </div>
+      <div class="card cp" style="margin-bottom:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Цикл прогресі</div>
+        <div style="display:flex;gap:6px;align-items:center" id="cycle-dots"></div>
+      </div>
+      <div class="g3" style="margin-bottom:12px">
+        <div class="card cp"><div class="stat-n" id="ts-done">0</div><div class="stat-l">Аяқталды</div></div>
+        <div class="card cp"><div class="stat-n" id="ts-focus">0м</div><div class="stat-l">Фокус</div></div>
+        <div class="card cp"><div class="stat-n" id="ts-today">0</div><div class="stat-l">Бүгін 🍅</div></div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer" onclick="togTmSet()">
+          <div style="font-size:14px;font-weight:600">⚙️ Баптаулар</div>
+          <i id="tmset-chev" style="color:var(--t3);font-size:12px;transition:transform .25s;font-style:normal">›</i>
+        </div>
+        <div id="tmset-body" style="display:none;padding:0 20px 20px;border-top:.5px solid var(--bd)">
+          <div style="background:var(--bluel);border-radius:12px;padding:14px;margin:16px 0 20px;font-size:11px;color:var(--t2);line-height:1.7"><b style="color:var(--blue)">4-3-2-1 Помодоро əдісі</b><br><b>4</b>× Фокус → <b>3</b>× Қысқа → <b>2</b>× Орта → <b>1</b>× Ұзын</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Фокус (4×)</div><div style="display:flex;align-items:center;gap:8px"><input type="number" id="s-focus" min="1" max="90" style="width:56px;padding:5px 8px;border-radius:8px;border:.5px solid var(--bd);background:rgba(0,0,0,.03);font-size:13px;font-weight:600;text-align:center;outline:none" onchange="saveTmSet()"><span style="font-size:12px;color:var(--t2)">мин</span></div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Қысқа (3×)</div><div style="display:flex;align-items:center;gap:8px"><input type="number" id="s-short" min="1" max="30" style="width:56px;padding:5px 8px;border-radius:8px;border:.5px solid var(--bd);background:rgba(0,0,0,.03);font-size:13px;font-weight:600;text-align:center;outline:none" onchange="saveTmSet()"><span style="font-size:12px;color:var(--t2)">мин</span></div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Орта (2×)</div><div style="display:flex;align-items:center;gap:8px"><input type="number" id="s-mid" min="1" max="30" style="width:56px;padding:5px 8px;border-radius:8px;border:.5px solid var(--bd);background:rgba(0,0,0,.03);font-size:13px;font-weight:600;text-align:center;outline:none" onchange="saveTmSet()"><span style="font-size:12px;color:var(--t2)">мин</span></div></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Ұзын (1×)</div><div style="display:flex;align-items:center;gap:8px"><input type="number" id="s-long" min="1" max="60" style="width:56px;padding:5px 8px;border-radius:8px;border:.5px solid var(--bd);background:rgba(0,0,0,.03);font-size:13px;font-weight:600;text-align:center;outline:none" onchange="saveTmSet()"><span style="font-size:12px;color:var(--t2)">мин</span></div></div>
+          </div>
+          <div style="border-top:.5px solid var(--bd);margin-top:16px;padding-top:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:13px;font-weight:500">Автоматты жалғасу</div></div><div id="tg-auto" onclick="togAuto()" style="width:44px;height:26px;border-radius:13px;background:rgba(0,0,0,.1);position:relative;cursor:pointer;transition:background .25s"><div id="tg-auto-k" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:left .25s cubic-bezier(.34,1.2,.64,1)"></div></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:13px;font-weight:500">Дыбыс</div></div><div id="tg-sound" onclick="togSound()" style="width:44px;height:26px;border-radius:13px;background:rgba(0,0,0,.1);position:relative;cursor:pointer;transition:background .25s"><div id="tg-sound-k" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:left .25s cubic-bezier(.34,1.2,.64,1)"></div></div></div>
+          </div>
+          <button onclick="applyTmSet()" style="width:100%;margin-top:16px;padding:10px;border-radius:980px;background:var(--blue);color:white;border:none;font-size:14px;font-weight:500;cursor:pointer">Сақтап қолдану</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="sec" id="app-stats">
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:16px">📊 Статистика</div>
+      <div class="g4" style="margin-bottom:16px">
+        <div class="card cp"><div class="stat-n" id="st-topics" style="color:var(--blue)">0</div><div class="stat-l">Тақырып</div></div>
+        <div class="card cp"><div class="stat-n" id="st-hb" style="color:var(--green)">0</div><div class="stat-l">Əдет (апта)</div></div>
+        <div class="card cp"><div class="stat-n" id="st-pomo" style="color:var(--orange)">0</div><div class="stat-l">Помодоро</div></div>
+        <div class="card cp"><div class="stat-n" id="st-focus" style="color:var(--purple)">0м</div><div class="stat-l">Фокус</div></div>
+      </div>
+      <div class="card cp" style="margin-bottom:12px">
+        <div style="font-size:14px;font-weight:600;letter-spacing:-.2px;margin-bottom:16px">Апталық белсенділік</div>
+        <div style="background:rgba(0,0,0,.025);border-radius:12px;padding:16px;height:160px;display:flex;align-items:flex-end;gap:8px" id="week-chart"></div>
+      </div>
+      <div class="card cp" style="margin-bottom:12px">
+        <div style="font-size:14px;font-weight:600;letter-spacing:-.2px;margin-bottom:12px">Пəн бойынша прогресс</div>
+        <div id="subj-prog"></div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(0,113,227,.08),rgba(191,90,242,.08));border:.5px solid rgba(0,113,227,.15);border-radius:var(--r);padding:20px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:var(--s1);backdrop-filter:var(--blur);z-index:-1"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div style="font-size:15px;font-weight:600">🎵 Lo-fi Музыка</div><span class="pill pill-blue" id="lofi-status">Тоқтатылған</span></div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:8px" id="lofi-track">Трек таңдаңыз...</div>
+        <div style="display:flex;align-items:flex-end;justify-content:center;gap:3px;height:48px;margin-bottom:12px" id="lofi-vis"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px">
+          <button class="lofi-btn" onclick="lofPrev()">⏮</button>
+          <button class="lofi-btn main-b" id="lofi-btn" onclick="lofToggle()">▶</button>
+          <button class="lofi-btn" onclick="lofNext()">⏭</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--t2)">🔊</span><input type="range" id="lofi-vol" min="0" max="100" value="60" style="flex:1;accent-color:var(--blue)" oninput="lofVol(this.value)"></div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="sec" id="app-ach">
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:16px">🏅 Жетістіктер</div>
+      <div class="xp-wrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="xp-badge" id="xp-badge">⭐</div>
+            <div><div style="font-size:22px;font-weight:700;letter-spacing:-.5px" id="xp-level">1-деңгей</div><div style="font-size:12px;color:var(--t2)" id="xp-title">Бастаушы</div></div>
+          </div>
+          <div style="font-size:12px;color:var(--t2)" id="xp-next">0/100 XP</div>
+        </div>
+        <div class="prog" style="margin:0"><div class="pf" id="xp-fill" style="width:0%;background:linear-gradient(90deg,var(--orange),#ff375f)"></div></div>
+      </div>
+      <div class="ach-grid" id="ach-grid"></div>
+    </div>
+
+    <!-- PLANNER -->
+    <div class="sec" id="app-planner">
+      <div class="seg">
+        <button class="seg-b active" onclick="showPlan('monthly',this)">Айлық</button>
+        <button class="seg-b" onclick="showPlan('weekly',this)">Апталық</button>
+      </div>
+      <div id="plan-monthly">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <button style="background:var(--s1);border:.5px solid var(--bd);color:var(--t1);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)" onclick="chM(-1)">‹</button>
+          <div style="font-size:17px;font-weight:600;letter-spacing:-.3px" id="m-lbl"></div>
+          <button style="background:var(--s1);border:.5px solid var(--bd);color:var(--t1);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)" onclick="chM(1)">›</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px" id="cal-grid"></div>
+      </div>
+      <div id="plan-weekly" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <button style="background:var(--s1);border:.5px solid var(--bd);color:var(--t1);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)" onclick="chW(-1)">‹</button>
+          <div style="font-size:17px;font-weight:600;letter-spacing:-.3px" id="w-lbl"></div>
+          <button style="background:var(--s1);border:.5px solid var(--bd);color:var(--t1);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh)" onclick="chW(1)">›</button>
+        </div>
+        <div id="weekly-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCK -->
+<div class="dock" id="main-dock" style="display:none">
+  <div class="di active" id="di-peak" onclick="sw('peak')"><span>🗺</span><div class="dtt">Жол картасы</div></div>
+  <div class="di" id="di-habits" onclick="sw('habits')"><span>💪</span><div class="dtt">Əдеттер</div></div>
+  <div class="di" id="di-timer" onclick="sw('timer')"><span>⏱</span><div class="dtt">Таймер</div></div>
+  <div class="di" id="di-stats" onclick="sw('stats')"><span>📊</span><div class="dtt">Статистика</div></div>
+  <div class="di" id="di-ach" onclick="sw('ach')"><span>🏅</span><div class="dtt">Жетістіктер</div></div>
+  <div class="dsep"></div>
+  <div class="di" id="di-planner" onclick="sw('planner')"><span>📅</span><div class="dtt">Жоспар</div></div>
+</div>
+
+<script>
+// pdf.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+// ═══ THEME ═══
+function toggleTheme(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const next=isDark?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  document.getElementById('theme-btn').textContent=next==='dark'?'🌙':'☀️';
+  localStorage.setItem('ubt_theme',next);
+}
+function loadTheme(){
+  const saved=localStorage.getItem('ubt_theme')||'light';
+  if(saved==='dark'){document.documentElement.setAttribute('data-theme','dark');const b=document.getElementById('theme-btn');if(b)b.textContent='🌙';}
+}
+loadTheme();
+
+// ═══ CURSOR ═══
+const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+setInterval(()=>{rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px'},14);
+
+// ═══ CLOCK ═══
+function tick(){const el=document.getElementById('mbtime');if(el)el.textContent=new Date().toLocaleTimeString('kk-KZ',{hour:'2-digit',minute:'2-digit'})}
+tick();setInterval(tick,1000);
+
+// ═══ TOAST ═══
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+// ═══ БЭКЕНД БАЙЛАНЫСЫ ═══
+const API = 'http://localhost:3000/api';
+let authToken = localStorage.getItem('ubt_token');
+let _cache = {};
+
+async function loadAllData() {
+  if (!authToken) return;
+  const res = await fetch(`${API}/data`, {
+    headers: { Authorization: `Bearer ${authToken}` }
+  });
+  if (res.ok) {
+    _cache = await res.json();
+  }
+}
+
+function uGet(k, d) {
+  return _cache.hasOwnProperty(k) ? _cache[k] : d;
+}
+
+function uSet(k, v) {
+  _cache[k] = v;
+  fetch(`${API}/data/set`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`
+    },
+    body: JSON.stringify({ key: k, value: v })
+  });
+}
+
+// ═══ AUTH ═══
+let curUser = null;
+
+function authTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('at-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('at-reg').style.display = tab === 'reg' ? '' : 'none';
+  document.getElementById('a-err').textContent = '';
+}
+
+async function doLogin() {
+  const u = document.getElementById('li-u').value.trim().toLowerCase();
+  const p = document.getElementById('li-p').value;
+  if (!u || !p) { document.getElementById('a-err').textContent = 'Логин мен парольді енгізіңіз'; return; }
+
+  const res = await fetch(`${API}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, password: p })
+  });
+  const data = await res.json();
+  if (!res.ok) { document.getElementById('a-err').textContent = data.error; return; }
+
+  authToken = data.token;
+  localStorage.setItem('ubt_token', authToken);
+  curUser = data.username;
+  await loadAllData();
+  enterApp({ name: data.username, role: data.role || 'student' });
+}
+
+async function doReg() {
+  const name = document.getElementById('rg-n').value.trim();
+  const u = document.getElementById('rg-u').value.trim().toLowerCase().replace(/\s/g, '');
+  const p = document.getElementById('rg-p').value;
+  if (!name || !u || !p) { document.getElementById('a-err').textContent = 'Барлық өрістерді толтырыңыз'; return; }
+  if (p.length < 6) { document.getElementById('a-err').textContent = 'Пароль кем дегенде 6 символ'; return; }
+
+  const res = await fetch(`${API}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, password: p, name: name })
+  });
+  const data = await res.json();
+  if (!res.ok) { document.getElementById('a-err').textContent = data.error; return; }
+
+  authToken = data.token;
+  localStorage.setItem('ubt_token', authToken);
+  curUser = data.username;
+  await loadAllData();
+  enterApp({ name: name, role: 'student' });
+}
+
+function enterApp(user){
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('main-app').style.display='block';
+  document.getElementById('main-dock').style.display='flex';
+  const cols=['#0071e3','#30d158','#bf5af2','#ff9f0a','#ff3b30','#5ac8fa'];
+  const col=cols[user.name.charCodeAt(0)%cols.length];
+  document.getElementById('mb-av').style.background=col;
+  document.getElementById('mb-av').textContent=user.name[0].toUpperCase();
+  document.getElementById('mb-un').textContent=user.name;
+  document.getElementById('hero-greet').textContent='Сəлем, '+user.name+'! 👋';
+  if(user.role==='admin')document.getElementById('admin-link').style.display='inline';
+  initApp();
+}
+function doLogout(){setCur(null);curUser=null;location.reload()}
+function goAdmin(){const db=getDB();if(db[getCur()]?.role==='admin')showAdmin(true)}
+function showAdmin(show){document.getElementById('admin-screen').style.display=show?'block':'none';if(show)renderAdmin()}
+function renderAdmin(){
+  const db=getDB(),users=Object.entries(db);
+  document.getElementById('adm-stats').innerHTML=`<div class="astat"><div class="astat-n">${users.length}</div><div class="astat-l">Аккаунт</div></div><div class="astat"><div class="astat-n">${users.filter(([,v])=>v.role==='student').length}</div><div class="astat-l">Оқушылар</div></div><div class="astat"><div class="astat-n">${users.reduce((s,[,v])=>s+(v.data.xp||0),0)}</div><div class="astat-l">Жалпы XP</div></div><div class="astat"><div class="astat-n">${users.filter(([,v])=>Date.now()-v.created<86400000*7).length}</div><div class="astat-l">Осы апта</div></div>`;
+  const cols=['#0071e3','#30d158','#bf5af2','#ff9f0a','#ff3b30','#5ac8fa'];
+  const list=document.getElementById('users-list');list.innerHTML='';
+  users.forEach(([uname,u])=>{
+    const col=cols[u.name.charCodeAt(0)%cols.length],xp=u.data.xp||0,lvl=Math.floor(xp/100)+1,created=new Date(u.created).toLocaleDateString('kk-KZ');
+    const r=document.createElement('div');r.className='utr';
+    r.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><div class="ut-av" style="background:${col}">${u.name[0].toUpperCase()}</div><div><div style="font-size:13px;font-weight:600">${u.name}</div><div style="font-size:11px;color:var(--t3)">@${uname}</div></div></div><div style="font-size:12px;color:var(--t2)">${u.email||'—'}</div><div><span class="pill ${u.role==='admin'?'pill-red':'pill-blue'}">${u.role==='admin'?'Əкімші':'Оқушы'}</span></div><div style="font-size:13px;font-weight:500">${xp} XP · ${lvl}-дең</div><div style="font-size:12px;color:var(--t2)">${created}</div><div>${uname!=='admin'?`<button class="ut-del" onclick="delUser('${uname}')">Жою</button>`:''}</div>`;
+    list.appendChild(r);
+  });
+}
+function delUser(u){if(!confirm(`"${u}" жоясыз ба?`))return;const db=getDB();delete db[u];setDB(db);renderAdmin();toast('Пайдаланушы жойылды')}
+window.addEventListener('DOMContentLoaded',()=>{const u=getCur();if(u){const db=getDB();if(db[u]){curUser=u;enterApp(db[u])}}});
+
+// ═══ APP INIT ═══
+function initApp(){updateCD();buildWeeks();updatePeakProg();tmInit();renderHabits();renderStats();renderAch();renderMonth();initLib();sw('peak')}
+
+// ═══ NAV ═══
+const APPS=['peak','habits','timer','stats','ach','planner'];
+function sw(id){
+  APPS.forEach(a=>{document.getElementById('app-'+a)?.classList.toggle('active',a===id);document.getElementById('di-'+a)?.classList.toggle('active',a===id)});
+  if(id==='habits')renderHabits();
+  if(id==='stats')renderStats();
+  if(id==='ach')renderAch();
+  if(id==='timer')tmInit();
+  if(id==='planner'){renderMonth();renderWeek();}
+  if(id==='lib')renderLib();
+  if(id==='quiz-gen')initQuizGen();
+}
+
+// ═══ COUNTDOWN ═══
+function updateCD(){
+  const now=new Date(),d1=Math.max(0,Math.ceil((new Date('2026-06-03')-now)/864e5)),d2=Math.max(0,Math.ceil((new Date('2026-06-25')-now)/864e5));
+  document.getElementById('d1').textContent=d1;document.getElementById('d2').textContent=d2;
+  const s=new Date('2026-04-27'),t1=Math.ceil((new Date('2026-06-03')-s)/864e5),t2=Math.ceil((new Date('2026-06-25')-s)/864e5);
+  document.getElementById('cf1').style.width=Math.round((t1-d1)/t1*100)+'%';
+  document.getElementById('cf2').style.width=Math.round((t2-d2)/t2*100)+'%';
+}
+
+// ═══ CUSTOM WEEKS ═══
+let selWEm='🎯';
+function selWEmoji(e,el){selWEm=e;document.querySelectorAll('#wm-emojis .ep-o').forEach(x=>{x.style.borderColor='transparent';x.style.background=''});el.style.borderColor='var(--blue)';el.style.background='var(--bluel)'}
+function addCustomWeek(){document.getElementById('week-modal').classList.remove('hidden');setTimeout(()=>document.getElementById('wm-title').focus(),100)}
+function closeWeekModal(){document.getElementById('week-modal').classList.add('hidden')}
+function saveCustomWeek(){
+  const title=document.getElementById('wm-title').value.trim();
+  const dates=document.getElementById('wm-dates').value.trim();
+  const focus=document.getElementById('wm-focus').value.trim();
+  if(!title){toast('Апта атауын жазыңыз');return}
+  const custom=uGet('custom_weeks',[]);
+  const id='cw_'+Date.now();
+  const cols=['#0071e3','#bf5af2','#ff9f0a','#30d158','#ff3b30','#5ac8fa'];
+  const col=cols[custom.length%cols.length];
+  custom.push({id,num:String(WEEKS.length+custom.length+1),em:selWEm||'🎯',title,dates:dates||'',tag:focus||'Жаңа апта',col,
+    sched:[],meth:[],def:[]});
+  uSet('custom_weeks',custom);closeWeekModal();
+  document.getElementById('wm-title').value='';document.getElementById('wm-dates').value='';document.getElementById('wm-focus').value='';
+  buildWeeks();toast('✅ Жаңа апта қосылды!');
+}
+function getCustomWeeks(){return uGet('custom_weeks',[])}
+function delCustomWeek(id){
+  if(!confirm('Апта жойылсын ба?'))return;
+  uSet('custom_weeks',getCustomWeeks().filter(w=>w.id!==id));
+  document.getElementById('wc_'+id)?.remove();
+  toast('Жойылды');updatePeakProg();
+}
+
+// ═══ WEEKS ═══
+const MKK=['Қаңтар','Ақпан','Наурыз','Сəуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
+const DKK=['Дс','Сс','Ср','Бс','Жм','Сб','Жс'];
+const PMAP={mat:{l:'Мат',c:'pill-blue'},his:{l:'Тарих',c:'pill-orange'},inf:{l:'Инфо',c:'pill-purple'}};
+const WEEKS=[
+  {id:'w1',num:'1',em:'🌱',title:'Бірінші аялдама',dates:'27 Сəуір – 3 Мамыр',tag:'Негіз',col:'#0071e3',sched:[{d:'Дс',b:[{t:'Тарих',c:'orange'},{t:'Математика',c:'blue'}]},{d:'Сс',b:[{t:'Мат логарифм',c:'blue'},{t:'Информатика',c:'purple'}]},{d:'Ср',b:[{t:'Мат нұсқа',c:'blue'},{t:'Инфо код',c:'purple'}]},{d:'Бс',b:[{t:'Инфо тест',c:'purple'},{t:'Тарих нұсқа',c:'orange'}]},{d:'Жм',b:[{t:'Мат геометрия',c:'blue'},{t:'Кітап',c:'orange'}]},{d:'Сб',b:[{t:'Мат тест',c:'blue'},{t:'Инфо тест',c:'purple'}]},{d:'Жс',b:[{t:'Демалыс',c:'green'}]}],meth:[{n:'Deliberate Practice',d:'Əлсіз тақырып → 20 есеп → Айнаға түсіндір'},{n:'Тарих цикл',d:'Оқы → Конспект → Нұсқа → Қате талда'},{n:'Инфо қате цикл',d:'Нұсқа → Қате тақырып 100% → Қайта тест'}],def:[{s:'mat',t:'Квадрат теңдеулер'},{s:'mat',t:'Тригонометрия'},{s:'mat',t:'Логарифм'},{s:'his',t:'Ежелгі Қазақстан'},{s:'his',t:'Түрік қағанаты'},{s:'inf',t:'Алгоритм негіздері'},{s:'inf',t:'Python негіздері'}]},
+  {id:'w2',num:'2',em:'📐',title:'Екінші аялдама',dates:'4 – 10 Мамыр',tag:'Тереңдету',col:'#bf5af2',sched:[{d:'Дс',b:[{t:'Тарих',c:'orange'},{t:'Математика',c:'blue'}]},{d:'Сс',b:[{t:'Мат логарифм',c:'blue'},{t:'Инфо теория',c:'purple'}]},{d:'Ср',b:[{t:'Мат нұсқа',c:'blue'},{t:'Инфо код',c:'purple'}]},{d:'Бс',b:[{t:'Инфо тест',c:'purple'},{t:'Тарих нұсқа',c:'orange'}]},{d:'Жм',b:[{t:'Мат геометрия',c:'blue'},{t:'Кітап',c:'orange'}]},{d:'Сб',b:[{t:'Мат тест',c:'blue'},{t:'Инфо тест',c:'purple'}]},{d:'Жс',b:[{t:'Демалыс',c:'green'}]}],meth:[{n:'Уақытқа оқу',d:'Таймер → 30 сұрақ 40 минутта → Жылдамдықты дамыт'},{n:'Хронология кестесі',d:'Тақырыптан хронология → Айнаға жылдам айт'},{n:'Spaced repetition',d:'Өткен апта → Жаңа тақырып қос'}],def:[{s:'mat',t:'Функция графигі'},{s:'mat',t:'Ықтималдық'},{s:'mat',t:'Теңсіздіктер'},{s:'his',t:'Қазақ хандығы'},{s:'his',t:'Ресей отарлауы'},{s:'inf',t:'Деректер құрылымы'},{s:'inf',t:'Желі негіздері'}]},
+  {id:'w3',num:'3',em:'🔥',title:'Үшінші аялдама',dates:'11 – 17 Мамыр',tag:'Интенсив',col:'#ff9f0a',sched:[{d:'Дс',b:[{t:'Тарих',c:'orange'},{t:'Математика',c:'blue'}]},{d:'Сс',b:[{t:'Мат логарифм',c:'blue'},{t:'Инфо нұсқа',c:'purple'}]},{d:'Ср',b:[{t:'Мат нұсқа',c:'blue'},{t:'Инфо код',c:'purple'}]},{d:'Бс',b:[{t:'Инфо тест',c:'purple'},{t:'Тарих нұсқа',c:'orange'}]},{d:'Жм',b:[{t:'Мат геометрия',c:'blue'},{t:'Кітап',c:'orange'}]},{d:'Сб',b:[{t:'Пробный тест',c:'blue'},{t:'Қате талдау',c:'purple'}]},{d:'Жс',b:[{t:'Демалыс',c:'green'}]}],meth:[{n:'40 есеп режімі',d:'Күніне 40 есеп → Қатені бірден талда'},{n:'Пробный режім',d:'ҰБТ форматында тест → Уақытты бақыла'},{n:'Күрделі есептер',d:'Тек қиын деңгей → Логиканы қағазға'}],def:[{s:'mat',t:'Геометрия: үшбұрыш'},{s:'mat',t:'Вектор'},{s:'mat',t:'Координаталар'},{s:'his',t:'Кеңес дəуірі'},{s:'his',t:'Тəуелсіздік'},{s:'inf',t:'SQL негіздері'},{s:'inf',t:'Логикалық есептер'}]},
+  {id:'w4',num:'4',em:'🎯',title:'Төртінші аялдама',dates:'18 – 25 Мамыр',tag:'Финал',col:'#30d158',sched:[{d:'Дс',b:[{t:'Тарих қайталау',c:'orange'},{t:'Математика',c:'blue'}]},{d:'Сс',b:[{t:'Мат логарифм',c:'blue'},{t:'Инфо қайталау',c:'purple'}]},{d:'Ср',b:[{t:'Мат нұсқа',c:'blue'},{t:'Инфо нұсқа',c:'purple'}]},{d:'Бс',b:[{t:'Инфо тест',c:'purple'},{t:'Тарих нұсқа',c:'orange'}]},{d:'Жм',b:[{t:'Мат геометрия',c:'blue'},{t:'Əлсіз жерлер',c:'orange'}]},{d:'Сб',b:[{t:'Мат тест',c:'blue'},{t:'Инфо тест',c:'purple'}]},{d:'Жс',b:[{t:'Демалыс',c:'green'}]}],meth:[{n:'Жылдам қайталау',d:'Əр тақырып 15 мин → Əлсіз жерге фокус'},{n:'Пробный финал',d:'3 пробный тест → Əр тесттен кейін талдау'},{n:'Психология',d:'Ерте ұйықта → Стресс жоқ → Сенесің'}],def:[{s:'mat',t:'Барлық тақырып: жылдам қайталау'},{s:'mat',t:'Мат сауаттылық финал'},{s:'his',t:'Хронология: толық қайталау'},{s:'his',t:'Маңызды даталар'},{s:'inf',t:'Код жазу: жылдам'},{s:'inf',t:'Қауіпсіздік негіздері'}]}
+];
+function gT(wid){return uGet('t_'+wid,WEEKS.find(w=>w.id===wid).def.map(d=>({...d,done:false})))}
+function sT(wid,arr){uSet('t_'+wid,arr)}
+function updatePeakProg(){
+  let tot=0,dn=0;
+  WEEKS.forEach(w=>{const t=gT(w.id);dn+=t.filter(x=>x.done).length;tot+=t.length;const p=tot?Math.round(t.filter(x=>x.done).length/t.length*100):0;const f=document.getElementById('wpf_'+w.id);if(f)f.style.width=p+'%'});
+  const g=tot?Math.round(dn/tot*100):0;
+  document.getElementById('total-fill').style.width=g+'%';document.getElementById('prog-pct').textContent=g+'%';
+  document.getElementById('prog-arc').style.strokeDashoffset=163.4*(1-g/100);document.getElementById('done-cnt').textContent=dn+'/'+tot;
+}
+function renderTopics(wid){
+  const topics=gT(wid),c=document.getElementById('tl_'+wid);if(!c)return;c.innerHTML='';
+  topics.forEach((tp,i)=>{
+    const pi=PMAP[tp.s]||PMAP.mat;const r=document.createElement('div');r.className='trow';
+    r.innerHTML=`<div class="tck${tp.done?' done':''}" onclick="togT('${wid}',${i})"></div><input class="tnm${tp.done?' done':''}" value="${tp.t.replace(/"/g,'&quot;')}" placeholder="Тақырып..." onchange="editTN('${wid}',${i},this.value)"/><span class="pill ${pi.c}" style="font-size:10px">${pi.l}</span><select style="background:transparent;border:none;font-size:10px;color:var(--t2);outline:none;cursor:pointer" onchange="editTS('${wid}',${i},this.value)"><option value="mat"${tp.s==='mat'?' selected':''}>Мат</option><option value="his"${tp.s==='his'?' selected':''}>Тарих</option><option value="inf"${tp.s==='inf'?' selected':''}>Инфо</option></select><button style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px" onmouseenter="this.style.color='var(--red)'" onmouseleave="this.style.color='var(--t3)'" onclick="delT('${wid}',${i})">×</button>`;
+    c.appendChild(r);
+  });
+}
+function togT(wid,i){const t=gT(wid);t[i].done=!t[i].done;sT(wid,t);renderTopics(wid);updatePeakProg();if(t[i].done){addXP(5);checkAch()}}
+function editTN(wid,i,v){const t=gT(wid);t[i].t=v;sT(wid,t)}
+function editTS(wid,i,v){const t=gT(wid);t[i].s=v;sT(wid,t);renderTopics(wid)}
+function delT(wid,i){const t=gT(wid);t.splice(i,1);sT(wid,t);renderTopics(wid);updatePeakProg()}
+function addT(wid){const t=gT(wid);t.push({s:'mat',t:'',done:false});sT(wid,t);renderTopics(wid);setTimeout(()=>{const ins=document.querySelectorAll(`#tl_${wid} .tnm`);if(ins.length)ins[ins.length-1].focus()},50)}
+function swItab(wid,tab,el){document.querySelectorAll(`#wc_${wid} .itab`).forEach(t=>t.classList.remove('active'));document.querySelectorAll(`#wc_${wid} .itc`).forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById(wid+'_'+tab).classList.add('active')}
+function togWC(wid){const el=document.getElementById('wc_'+wid),was=el.classList.contains('open');document.querySelectorAll('.wcard').forEach(c=>c.classList.remove('open'));if(!was){el.classList.add('open');renderTopics(wid)}}
+function saveNote(wid){uSet('note_'+wid,document.getElementById('note_'+wid).value);const b=document.getElementById('nsv_'+wid);b.textContent='✓ Сақталды';setTimeout(()=>b.textContent='Сақтау',1800)}
+function buildWeeks(){
+  const wl=document.getElementById('weeks-list');if(!wl||wl.children.length>0)return;
+  WEEKS.forEach(w=>{
+    const el=document.createElement('div');el.className='wcard';el.id='wc_'+w.id;
+    const sch=w.sched.map(d=>`<div class="sr"><span class="sd">${d.d}</span><div style="display:flex;flex-wrap:wrap;gap:5px">${d.b.map(b=>`<span class="pill pill-${b.c}" style="font-size:10px">${b.t}</span>`).join('')}</div></div>`).join('');
+    const mth=w.meth.map(m=>`<div class="mi"><div style="font-size:13px;font-weight:600;margin-bottom:4px">${m.n}</div><div style="font-size:12px;color:var(--t2);line-height:1.6">${m.d}</div></div>`).join('');
+    const nv=(uGet('note_'+w.id,'')).replace(/</g,'&lt;');
+    el.innerHTML=`<div class="wc-hdr" onclick="togWC('${w.id}')"><div class="wc-ico" style="background:${w.col}20">${w.em}</div><div class="wc-info"><div class="wc-title">Аялдама ${w.num} · ${w.title}</div><div class="wc-sub">${w.dates}</div></div><span class="pill pill-blue" style="font-size:10px">${w.tag}</span><i class="wc-chev">›</i></div><div class="wc-prog"><div class="wc-pf" id="wpf_${w.id}" style="width:0%"></div></div><div class="wc-body"><div class="itabs"><div class="itab active" onclick="swItab('${w.id}','sched',this)">Кесте</div><div class="itab" onclick="swItab('${w.id}','topics',this)">Тақырып</div><div class="itab" onclick="swItab('${w.id}','meth',this)">Методика</div><div class="itab" onclick="swItab('${w.id}','notes',this)">Жазба</div></div><div class="itc active" id="${w.id}_sched">${sch}</div><div class="itc" id="${w.id}_topics"><div id="tl_${w.id}"></div><button class="addbtn" onclick="addT('${w.id}')">+ Тақырып қос</button></div><div class="itc" id="${w.id}_meth">${mth}</div><div class="itc" id="${w.id}_notes"><textarea class="note-ta" id="note_${w.id}" placeholder="Өз жазбаларыңды қос...">${nv}</textarea><button class="note-sv" id="nsv_${w.id}" onclick="saveNote('${w.id}')" style="background:var(--blue);color:white;border:none;padding:7px 18px;border-radius:980px;font-size:12px;font-weight:500;cursor:pointer;margin-top:8px">Сақтау</button></div></div>`;
+    wl.appendChild(el);
+  });
+  document.getElementById('wc_w1').classList.add('open');renderTopics('w1');
+}
+
+// ═══ LIBRARY ═══
+const DEF_FOLDERS={f_mat:{id:'f_mat',name:'Математика',emoji:'📐',color:'#0071e3',subj:'mat'},f_his:{id:'f_his',name:'Тарих',emoji:'📜',color:'#ff9f0a',subj:'his'},f_inf:{id:'f_inf',name:'Информатика',emoji:'💻',color:'#bf5af2',subj:'inf'},f_nuska:{id:'f_nuska',name:'Нұсқа талдаулар',emoji:'📊',color:'#30d158',subj:'gen'},f_formula:{id:'f_formula',name:'Формулалар',emoji:'🔢',color:'#ff3b30',subj:'mat'}};
+const SUBJ_C={mat:'pill-blue',his:'pill-orange',inf:'pill-purple',gen:'pill-green'};
+const SUBJ_N={mat:'Математика',his:'Тарих',inf:'Информатика',gen:'Жалпы'};
+function getFolders(){const saved=uGet('lib_folders',null);if(!saved){const defs={...DEF_FOLDERS};uSet('lib_folders',defs);return defs}return saved}
+function setFolders(f){uSet('lib_folders',f)}
+function getFiles(){return uGet('lib_files',{})}
+function setFiles(f){uSet('lib_files',f)}
+function getFilesIn(fid){return Object.values(getFiles()).filter(f=>f.folderId===fid).sort((a,b)=>b.updated-a.updated)}
+function timeAgo(ts){if(!ts)return '';const d=Math.floor((Date.now()-ts)/60000);if(d<1)return 'жаңа ғана';if(d<60)return d+' мин бұрын';if(d<1440)return Math.floor(d/60)+' сағ бұрын';return Math.floor(d/1440)+' күн бұрын'}
+
+let curFolder=null,curFileId=null;
+const EMJS=['📁','📐','📜','💻','📊','🔢','📚','🗂','📝','🧪','🎯','⭐','🔬','🏆','💡','🧠'];
+const CLRS=['#0071e3','#30d158','#ff9f0a','#bf5af2','#ff3b30','#5ac8fa','#ff375f','#34c759'];
+let selEmoji='📁',selColor='#0071e3';
+
+function initLib(){renderFolderSidebar();showAllFiles()}
+function renderLib(){renderFolderSidebar()}
+
+function renderFolderSidebar(){
+  const folders=getFolders(),files=getFiles();
+  document.getElementById('all-cnt').textContent=Object.keys(files).length;
+  const sb=document.getElementById('folder-sb-list');sb.innerHTML='';
+  Object.values(folders).forEach(f=>{
+    const cnt=getFilesIn(f.id).length;
+    const el=document.createElement('div');el.className='f-item'+(curFolder===f.id?' active':'');
+    el.innerHTML=`<span class="f-item-ico">${f.emoji}</span><span class="f-item-name">${f.name}</span><span class="f-item-cnt">${cnt}</span>`;
+    el.onclick=()=>openFolder(f.id);sb.appendChild(el);
+  });
+}
+
+function showAllFiles(){
+  curFolder=null;
+  document.querySelectorAll('.f-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('fi-all').classList.add('active');
+  document.getElementById('lib-fv-title').textContent='Барлық материалдар';
+  const files=getFiles();
+  document.getElementById('lib-fv-sub').textContent=Object.keys(files).length+' материал';
+  document.getElementById('btn-new-txt').style.display='none';
+  renderFileGrid(Object.values(files));
+  showLibView('folder');
+}
+
+function openFolder(fid){
+  curFolder=fid;
+  document.querySelectorAll('.f-item').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.f-item').forEach(el=>{if(el.querySelector('.f-item-name')?.textContent===getFolders()[fid]?.name)el.classList.add('active')});
+  renderFolderSidebar();
+  const f=getFolders()[fid];
+  document.getElementById('lib-fv-title').textContent=f.emoji+' '+f.name;
+  document.getElementById('lib-fv-sub').textContent=SUBJ_N[f.subj]+' · '+getFilesIn(fid).length+' материал';
+  document.getElementById('btn-new-txt').style.display='';
+  renderFileGrid(getFilesIn(fid));
+  showLibView('folder');
+}
+
+function renderFileGrid(files){
+  const grid=document.getElementById('file-grid'),empty=document.getElementById('lib-empty');
+  grid.innerHTML='';
+  if(!files.length){grid.style.display='none';empty.style.display='block';return}
+  grid.style.display='';empty.style.display='none';
+  files.forEach(fi=>{
+    const folder=getFolders()[fi.folderId]||{emoji:'📄',color:'#0071e3',subj:'gen'};
+    const d=document.createElement('div');d.className='fcard';
+    const isPDF=fi.type==='pdf';
+    const words=isPDF?fi.pages+'б':((fi.body||'').split(/\s+/).filter(Boolean).length)+' сөз';
+    d.innerHTML=`<div class="fcard-strip" style="background:${folder.color}"></div><div class="fcard-ico">${isPDF?'📄':folder.emoji}</div><div class="fcard-title">${fi.title||'Атаусыз'}</div><div class="fcard-meta">${words} · ${timeAgo(fi.updated)}</div><span class="fcard-type pill ${SUBJ_C[folder.subj]||'pill-blue'}">${isPDF?'PDF':'Мəтін'}</span><button class="fcard-del" onclick="event.stopPropagation();delLibFile('${fi.id}')">×</button>`;
+    d.onclick=()=>isPDF?openPDFView(fi.id):openTextFile(fi.id);
+    grid.appendChild(d);
+  });
+}
+
+function showLibView(v){
+  document.getElementById('lib-folder-view').style.display=v==='folder'?'':'none';
+  document.getElementById('lib-file-view').style.display=v==='file'?'':'none';
+  document.getElementById('lib-pdf-view').style.display=v==='pdf'?'':'none';
+}
+
+function libSearch(q){
+  if(!q.trim()){if(curFolder)openFolder(curFolder);else showAllFiles();return}
+  const files=Object.values(getFiles()).filter(f=>(f.title||'').toLowerCase().includes(q.toLowerCase())||(f.body||'').toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('lib-fv-title').textContent='🔍 "'+q+'"';
+  document.getElementById('lib-fv-sub').textContent=files.length+' нəтиже';
+  document.getElementById('btn-new-txt').style.display='none';
+  renderFileGrid(files);showLibView('folder');
+}
+
+// TEXT FILES
+let autoSvTm=null;
+function newTextFile(){
+  if(!curFolder){toast('Алдымен папка таңдаңыз');return}
+  const id='fi_'+Date.now();const files=getFiles();
+  files[id]={id,folderId:curFolder,type:'text',title:'',body:'',created:Date.now(),updated:Date.now()};
+  setFiles(files);openTextFile(id);
+}
+function openTextFile(fid){
+  curFileId=fid;const fi=getFiles()[fid];if(!fi)return;
+  document.getElementById('fv-title-inp').value=fi.title||'';
+  document.getElementById('fv-ta').value=fi.body||'';
+  updateWC();showLibView('file');
+}
+function closeFileView(){if(curFolder)openFolder(curFolder);else showAllFiles()}
+function saveTextFile(){
+  if(!curFileId)return;const files=getFiles(),fi=files[curFileId];if(!fi)return;
+  fi.title=document.getElementById('fv-title-inp').value;fi.body=document.getElementById('fv-ta').value;fi.updated=Date.now();
+  setFiles(files);const ind=document.getElementById('fv-saved');ind.textContent='✓ Сақталды';setTimeout(()=>ind.textContent='',1500);
+}
+function onTAChange(){updateWC();clearTimeout(autoSvTm);autoSvTm=setTimeout(saveTextFile,1200)}
+function updateWC(){const b=document.getElementById('fv-ta').value;document.getElementById('fv-wc').textContent=b.split(/\s+/).filter(Boolean).length+' сөз';document.getElementById('fv-cc').textContent=b.length+' символ'}
+function insT(before,after){const ta=document.getElementById('fv-ta'),s=ta.selectionStart,e=ta.selectionEnd,sel=ta.value.substring(s,e);ta.value=ta.value.substring(0,s)+before+sel+after+ta.value.substring(e);ta.selectionStart=s+before.length;ta.selectionEnd=s+before.length+sel.length;ta.focus();onTAChange()}
+function delLibFile(fid){if(!confirm('Материалды жоясыз ба?'))return;const files=getFiles();delete files[fid];setFiles(files);if(curFolder)openFolder(curFolder);else showAllFiles();renderFolderSidebar();toast('Жойылды')}
+function quizFromFile(){if(!curFileId)return;const fi=getFiles()[curFileId];if(fi)curFolder=fi.folderId;sw('quiz-gen');initQuizGen()}
+
+// FOLDER MODAL
+function openFolderModal(){
+  selEmoji='📁';selColor='#0071e3';document.getElementById('fn-name').value='';
+  const ep=document.getElementById('ep-row');ep.innerHTML='';
+  EMJS.forEach(e=>{const d=document.createElement('div');d.className='ep-o'+(e===selEmoji?' sel':'');d.textContent=e;d.onclick=()=>{selEmoji=e;ep.querySelectorAll('.ep-o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')};ep.appendChild(d)});
+  const cp=document.getElementById('cp-row');cp.innerHTML='';
+  CLRS.forEach(c=>{const d=document.createElement('div');d.className='cp-o'+(c===selColor?' sel':'');d.style.background=c;d.onclick=()=>{selColor=c;cp.querySelectorAll('.cp-o').forEach(x=>x.classList.remove('sel'));d.classList.add('sel')};cp.appendChild(d)});
+  document.getElementById('folder-modal').classList.remove('hidden');setTimeout(()=>document.getElementById('fn-name').focus(),100);
+}
+function closeFolderModal(){document.getElementById('folder-modal').classList.add('hidden')}
+function createFolder(){
+  const name=document.getElementById('fn-name').value.trim();if(!name){toast('Папка атауын жазыңыз');return}
+  const id='f_'+Date.now(),folders=getFolders();
+  folders[id]={id,name,emoji:selEmoji,color:selColor,subj:document.getElementById('fn-subj').value};
+  setFolders(folders);closeFolderModal();renderFolderSidebar();openFolder(id);toast('📁 Папка жасалды!')
+}
+
+// PDF
+let pdfDoc=null,pdfPage=1,pdfZoom=1.2,pdfFileId=null;
+function openPdfPicker(){document.getElementById('pdf-inp').click()}
+async function uploadPDF(e){
+  const file=e.target.files[0];if(!file)return;
+  if(!curFolder){toast('Алдымен папка таңдаңыз');e.target.value='';return}
+  toast('📄 PDF жүктелуде...');
+  try{
+    const reader=new FileReader();
+    reader.onload=async function(ev){
+      try{
+        const typedArr=new Uint8Array(ev.target.result);
+        const pdf=await pdfjsLib.getDocument({data:typedArr}).promise;
+        let text='';
+        for(let i=1;i<=Math.min(5,pdf.numPages);i++){
+          const pg=await pdf.getPage(i);
+          const tc=await pg.getTextContent();
+          text+=tc.items.map(s=>s.str).join(' ')+'\n';
+        }
+        // base64 encode safely
+        let bin='';const bytes=new Uint8Array(ev.target.result);
+        const chunk=8192;
+        for(let i=0;i<bytes.length;i+=chunk){
+          bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+chunk));
+        }
+        const b64=btoa(bin);
+        const id='fi_'+Date.now();const files=getFiles();
+        files[id]={id,folderId:curFolder,type:'pdf',title:file.name.replace(/\.pdf$/i,''),pages:pdf.numPages,body:text.substring(0,3000),pdfData:b64,created:Date.now(),updated:Date.now()};
+        setFiles(files);renderFolderSidebar();openFolder(curFolder);toast('✅ PDF қосылды! '+pdf.numPages+' бет');
+      }catch(err){toast('❌ PDF оқу қатесі: '+err.message);console.error(err)}
+    };
+    reader.onerror=()=>toast('❌ Файл оқу қатесі');
+    reader.readAsArrayBuffer(file);
+  }catch(err){toast('❌ Қате: '+err.message)}
+  e.target.value='';
+}
+async function openPDFView(fid){
+  const fi=getFiles()[fid];if(!fi||fi.type!=='pdf')return;
+  pdfFileId=fid;pdfPage=1;pdfZoom=1.2;
+  document.getElementById('pdf-name').textContent=fi.title||'PDF';
+  showLibView('pdf');
+  try{
+    const bin=atob(fi.pdfData);
+    const bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    pdfDoc=await pdfjsLib.getDocument({data:bytes}).promise;
+    document.getElementById('pdf-total-pages').textContent=pdfDoc.numPages;
+    document.getElementById('pdf-page-inp').max=pdfDoc.numPages;
+    await renderPDFPage(1);
+    renderPDFThumbs();
+  }catch(err){toast('❌ PDF ашу қатесі: '+err.message);console.error(err)}
+}
+async function renderPDFPage(n){
+  if(!pdfDoc)return;
+  pdfPage=Math.max(1,Math.min(n,pdfDoc.numPages));
+  document.getElementById('pdf-page-inp').value=pdfPage;
+  const page=await pdfDoc.getPage(pdfPage);
+  const vp=page.getViewport({scale:pdfZoom});
+  const canvas=document.getElementById('pdf-canvas');
+  canvas.width=vp.width;canvas.height=vp.height;
+  await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+  document.querySelectorAll('.pdf-thumb').forEach((t,i)=>{t.classList.toggle('active-pg',i+1===pdfPage)});
+}
+async function renderPDFThumbs(){
+  const row=document.getElementById('pdf-thumb-row');row.innerHTML='';
+  const total=Math.min(pdfDoc.numPages,20);
+  for(let i=1;i<=total;i++){
+    const page=await pdfDoc.getPage(i);const vp=page.getViewport({scale:.18});
+    const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+    await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+    const w=document.createElement('div');w.className='pdf-thumb'+(i===1?' active-pg':'');w.title='Бет '+i;
+    w.appendChild(c);w.onclick=()=>renderPDFPage(i);row.appendChild(w);
+  }
+}
+function pdfNext(){if(pdfDoc&&pdfPage<pdfDoc.numPages)renderPDFPage(pdfPage+1)}
+function pdfPrev(){if(pdfPage>1)renderPDFPage(pdfPage-1)}
+function goToPage(n){if(pdfDoc)renderPDFPage(n)}
+function pdfZoomIn(){pdfZoom=Math.min(3,pdfZoom+.25);renderPDFPage(pdfPage)}
+function pdfZoomOut(){pdfZoom=Math.max(.5,pdfZoom-.25);renderPDFPage(pdfPage)}
+function closePDFView(){if(curFolder)openFolder(curFolder);else showAllFiles()}
+function quizFromPDF(){if(pdfFileId){const fi=getFiles()[pdfFileId];if(fi)curFolder=fi.folderId}sw('quiz-gen');initQuizGen()}
+
+// ═══ QUIZ ENGINE ═══
+let quizQs=[],quizIdx=0,quizScore=0,quizAnswered=false,quizWrong=[];
+function initQuizGen(){
+  const sel=document.getElementById('qz-folder');sel.innerHTML='';
+  Object.values(getFolders()).forEach(f=>{
+    const o=document.createElement('option');o.value=f.id;o.textContent=f.emoji+' '+f.name;if(f.id===curFolder)o.selected=true;sel.appendChild(o);
+  });
+  updateQzPreview();
+}
+function updateQzPreview(){
+  const fid=document.getElementById('qz-folder')?.value;const cnt=parseInt(document.getElementById('qz-cnt')?.value||10);
+  if(!fid){document.getElementById('qz-preview').textContent='Папка таңдаңыз...';return}
+  const files=getFilesIn(fid),f=getFolders()[fid];
+  const tw=files.reduce((s,fi)=>s+(fi.body||'').split(/\s+/).filter(Boolean).length,0);
+  document.getElementById('qz-preview').innerHTML=`<b>${f?.emoji} ${f?.name}</b> · ${files.length} материал · ${tw} сөз<br>${files.length?'✅ Дайын — Quiz жасау батырмасын басыңыз':'⚠️ Папкада материал жоқ'}`;
+}
+function generateQuiz(){
+  const fid=document.getElementById('qz-folder').value;const cnt=Math.min(parseInt(document.getElementById('qz-cnt').value)||10,40);
+  const type=document.getElementById('qz-type').value,diff=document.getElementById('qz-diff').value;
+  const files=getFilesIn(fid);if(!files.length){toast('⚠️ Папкада материал жоқ!');return}
+  const allText=files.map(f=>f.title+'\n'+(f.body||'')).join('\n');
+  const folder=getFolders()[fid];
+  const qs=extractQs(allText,folder?.subj||'gen',cnt,type,diff);
+  if(!qs.length){toast('⚠️ Жеткілікті мазмұн жоқ!');return}
+  quizQs=qs;quizIdx=0;quizScore=0;quizWrong=[];quizAnswered=false;
+  document.getElementById('qz-hdr-title').textContent=(folder?.emoji||'⚡')+' '+(folder?.name||'')+' Quiz';
+  sw('quiz');renderQstn();
+}
+function extractQs(text,subj,cnt,type,diff){
+  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l.length>8);const qs=[];
+  // Q&A pairs
+  const qaRx=/(?:Сұрақ|Q)[:\s]+(.+?)[\n]+(?:Жауап|A)[:\s]+(.+)/gi;let m;
+  while((m=qaRx.exec(text))!==null&&qs.length<cnt)qs.push(mkMC(m[1].trim(),m[2].trim(),lines,subj));
+  // Dates
+  const dtRx=/(.{10,60}?)\s*(?:жылы|жылда|жылғы)\s*(\d{4})/g;
+  while((m=dtRx.exec(text))!==null&&qs.length<cnt){const yr=m[2],ctx=m[1].trim();if(ctx.length>5)qs.push({q:`${ctx} қай жылы?`,opts:shuf([yr,String(+yr-15),String(+yr+10),String(+yr-5)]),ans:yr,explain:'Дұрыс: '+yr})}
+  // Definitions
+  const defRx=/([А-ЯӘІҮҰҒҚЎЖЙа-яəіүұғқүөжй\w]{4,30})\s*[—:=]\s*([А-ЯӘІҮҰҒҚЎЖЙа-яəіүұғқүөжй\w][^.!?\n]{10,80})/g;
+  const defs=[];while((m=defRx.exec(text))!==null)defs.push({term:m[1].trim(),def:m[2].trim()});
+  defs.forEach(({term,def})=>{if(qs.length>=cnt)return;const wd=defs.filter(d=>d.term!==term).map(d=>d.def).slice(0,3);if(wd.length>=3)qs.push({q:`"${term}" дегеніміз не?`,opts:shuf([def,...wd]),ans:def,explain:`${term} — ${def}`})});
+  // Built-in
+  const bi=getBI(subj,diff);while(qs.length<cnt&&bi.length>0){const i=Math.floor(Math.random()*bi.length);qs.push(bi.splice(i,1)[0])}
+  if(type==='tf')return qs.slice(0,cnt).map(q=>({...q,opts:['Дұрыс','Бұрыс'],ans:'Дұрыс'}));
+  if(type==='mixed')return qs.slice(0,cnt).map((q,i)=>i%3===2?{...q,opts:['Дұрыс','Бұрыс'],ans:'Дұрыс'}:q);
+  return qs.slice(0,cnt);
+}
+function mkMC(q,ans,lines,subj){
+  const wd=lines.filter(l=>l!==ans&&l.length>3&&l.length<80).sort(()=>Math.random()-.5).slice(0,3);
+  while(wd.length<3)wd.push(['логарифм','вектор','матрица','1456','1480','массив','рекурсия'][Math.floor(Math.random()*7)]);
+  return{q,opts:shuf([ans,...wd.slice(0,3)]),ans,explain:'Дұрыс жауап: '+ans};
+}
+function shuf(arr){return[...arr].sort(()=>Math.random()-.5)}
+function getBI(subj,diff){
+  const q={mat:[{q:'sin²x + cos²x = ?',opts:['1','0','2','x'],ans:'1',explain:'Тригонометриялық негізгі тождество: sin²x + cos²x = 1'},{q:'Дискриминант формуласы ax²+bx+c=0 үшін:',opts:['D = b²-4ac','D = b²+4ac','D = 2b-4ac','D = b-4ac'],ans:'D = b²-4ac',explain:'D = b²-4ac'},{q:'log_a(a) = ?',opts:['1','0','a','1/a'],ans:'1',explain:'log_a(a) = 1'},{q:'Дөңгелек ауданы:',opts:['S = πr²','S = 2πr','S = πd','S = r²'],ans:'S = πr²',explain:'S = πr²'},{q:'sin α = ? (тікбұрышты үшбұрышта)',opts:['қарсы/гипотенуза','жапсарлас/гипотенуза','қарсы/жапсарлас','гипотенуза/қарсы'],ans:'қарсы/гипотенуза',explain:'sin = қарсы катет / гипотенуза'}],his:[{q:'Қазақ хандығы қай жылы құрылды?',opts:['1465','1480','1456','1500'],ans:'1465',explain:'1465 жылы Керей мен Жəнібек хандар тұсында'},{q:'Алаш партиясы қай жылы құрылды?',opts:['1917','1905','1920','1912'],ans:'1917',explain:'1917 жылы Əлихан Бөкейханов басшылығымен'},{q:'Қазақстан тəуелсіздігін қай жылы алды?',opts:['1991','1990','1992','1989'],ans:'1991',explain:'1991 жылы 16 желтоқсанда'},{q:'Түрік қағанатының негізін кім қалады?',opts:['Бумын қаған','Естемі қаған','Білге қаған','Күлтегін'],ans:'Бумын қаған',explain:'552 жылы Бумын қаған'},{q:'Кенесары Қасымовтың көтерілісі:',opts:['1837-1847','1820-1830','1850-1860','1800-1810'],ans:'1837-1847',explain:'1837-1847 жылдары'}],inf:[{q:'Python-да массив ұзындығы:',opts:['len()','length()','size()','count()'],ans:'len()',explain:'len() функциясы'},{q:'Бинарлық іздеу күрделілігі:',opts:['O(log n)','O(n)','O(n²)','O(1)'],ans:'O(log n)',explain:'O(log n)'},{q:'HTML-де сілтеме тегі:',opts:['<a>','<link>','<href>','<url>'],ans:'<a>',explain:'<a href="..."> тегі'},{q:'1 байт = ?',opts:['8 бит','4 бит','16 бит','2 бит'],ans:'8 бит',explain:'1 байт = 8 бит'},{q:'Рекурсия — бұл:',opts:['Функция өзін-өзі шақыруы','Цикл қолдануы','Массив өңдеуі','Жад бөлу'],ans:'Функция өзін-өзі шақыруы',explain:'Функцияның өзін-өзі шақыру əдісі'}]};
+  const pool=(q[subj]||[...q.mat,...q.his,...q.inf]).sort(()=>Math.random()-.5);
+  return diff==='hard'?[...pool].reverse():diff==='easy'?[...pool].slice(0,pool.length/2+1):[...pool];
+}
+function renderQstn(){
+  if(quizIdx>=quizQs.length){showResult();return}
+  const q=quizQs[quizIdx];quizAnswered=false;
+  const pct=Math.round(quizIdx/quizQs.length*100);
+  document.getElementById('qz-prog-fill').style.width=pct+'%';
+  document.getElementById('qz-prog-txt').textContent=(quizIdx+1)+'/'+quizQs.length;
+  document.getElementById('qz-score-live').textContent=quizScore+' ✓';
+  document.getElementById('qz-wrap').innerHTML=`<div class="q-card"><div style="font-size:12px;font-weight:600;color:var(--t3);margin-bottom:12px"><span class="pill pill-blue">${quizIdx+1}/${quizQs.length}</span></div><div class="q-text">${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" id="qo${i}" onclick="ansQ('${o.replace(/'/g,"\\'").replace(/"/g,'&quot;')}',${i})"><span class="opt-l">${'ABCD'[i]||i+1}</span>${o}</div>`).join('')}</div><div class="q-explain" id="qexpl">${q.explain||''}</div></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px">${quizIdx>0?'<button class="btn-s" onclick="quizBack()">← Артқа</button>':''}<button class="btn-p" id="qnext" onclick="nextQ()" style="display:none">Келесі →</button></div>`;
+}
+function ansQ(ans,idx){
+  if(quizAnswered)return;quizAnswered=true;
+  const q=quizQs[quizIdx],correct=ans===q.ans;
+  if(correct){quizScore++;document.getElementById('qz-score-live').textContent=quizScore+' ✓'}
+  else quizWrong.push({q:q.q,correct:q.ans,given:ans});
+  document.querySelectorAll('.q-opt').forEach((el,i)=>{el.classList.add('disabled');if(q.opts[i]===q.ans){el.classList.add('correct');el.querySelector('.opt-l').style.cssText='background:var(--green);color:white'}else if(i===idx&&!correct){el.classList.add('wrong');el.querySelector('.opt-l').style.cssText='background:var(--red);color:white'}});
+  document.getElementById('qexpl').classList.add('show');document.getElementById('qnext').style.display='';
+}
+function nextQ(){quizIdx++;renderQstn()}
+function quizBack(){if(quizIdx>0){quizIdx--;renderQstn()}}
+function endQuiz(){showResult()}
+function showResult(){
+  const total=quizQs.length,pct=total?Math.round(quizScore/total*100):0;
+  const grade=pct>=90?'🏆 Тамаша!':pct>=70?'⭐ Жақсы':pct>=50?'📚 Орташа':'💪 Жаттығу керек';
+  addXP(quizScore*10);checkAch();
+  let wrongH='';
+  if(quizWrong.length)wrongH=`<div style="background:rgba(255,59,48,.05);border:.5px solid rgba(255,59,48,.15);border-radius:12px;padding:16px;text-align:left;margin-bottom:20px"><div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">❌ Қателер (${quizWrong.length})</div>${quizWrong.slice(0,5).map(w=>`<div style="font-size:13px;color:var(--t2);padding:6px 0;border-bottom:.5px solid rgba(255,59,48,.1);line-height:1.5"><b>${w.q}</b><br><span style="color:var(--red)">Сіз: ${w.given}</span> · <span style="color:var(--green)">Дұрыс: ${w.correct}</span></div>`).join('')}</div>`;
+  document.getElementById('result-body').innerHTML=`<div style="text-align:center"><div style="font-size:72px;font-weight:700;letter-spacing:-3px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:8px">${pct}%</div><div style="font-size:18px;font-weight:600;margin-bottom:6px">${grade}</div><div style="font-size:14px;color:var(--t2);margin-bottom:24px">${quizScore} дұрыс / ${total} сұрақ · +${quizScore*10} XP</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px"><div style="background:rgba(0,0,0,.03);border-radius:12px;padding:14px"><div style="font-size:22px;font-weight:700;color:var(--green)">${quizScore}</div><div style="font-size:11px;color:var(--t3);text-transform:uppercase">Дұрыс</div></div><div style="background:rgba(0,0,0,.03);border-radius:12px;padding:14px"><div style="font-size:22px;font-weight:700;color:var(--red)">${quizWrong.length}</div><div style="font-size:11px;color:var(--t3);text-transform:uppercase">Қате</div></div><div style="background:rgba(0,0,0,.03);border-radius:12px;padding:14px"><div style="font-size:22px;font-weight:700;color:var(--blue)">${total}</div><div style="font-size:11px;color:var(--t3);text-transform:uppercase">Барлығы</div></div></div>${wrongH}<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn-p" onclick="generateQuiz()">🔄 Қайта</button><button class="btn-s" onclick="sw('quiz-gen')">⚙️ Баптау</button><button class="btn-s" onclick="sw('lib')">← Материалдар</button></div></div>`;
+  sw('result');
+}
+
+// ═══ HABITS ═══
+const EMOJIS=['🌅','💪','📚','🏃','🧠','🥗','💧','😴','🎯','⏱','✍️','🔥','🙏','🎵','🌿','⭐','🚀','💎','🦁','🏆','☀️','🌙','⚡','🎸','🧘','🍎','🏊','🎨'];
+const DEF_HABITS=[{id:'h1',em:'🌅',name:'Таңғы ритуал',days:[0,0,0,0,0,0,0]},{id:'h2',em:'💪',name:'Жаттығу 06:30',days:[0,0,0,0,0,0,0]},{id:'h3',em:'📚',name:'7 сағат оқу',days:[0,0,0,0,0,0,0]},{id:'h4',em:'🏃',name:'Пробежка',days:[0,0,0,0,0,0,0]},{id:'h5',em:'😴',name:'22:00 ұйқы',days:[0,0,0,0,0,0,0]}];
+function gH(){return uGet('habits',DEF_HABITS.map(h=>({...h,days:[...h.days]})))}
+function sH(arr){uSet('habits',arr)}
+let epTarget=null;
+function openEP(hid){epTarget=hid;const g=document.getElementById('epk-g');g.innerHTML='';EMOJIS.forEach(e=>{const d=document.createElement('div');d.className='ep-o';d.style.cssText='font-size:20px;padding:8px;border-radius:10px;cursor:pointer;text-align:center;transition:background .15s';d.textContent=e;d.onmouseenter=()=>d.style.background='rgba(0,0,0,.06)';d.onmouseleave=()=>d.style.background='';d.onclick=()=>pickEP(e);g.appendChild(d)});document.getElementById('epk').classList.remove('hidden')}
+function closeEP(){document.getElementById('epk').classList.add('hidden')}
+function pickEP(e){if(!epTarget)return;const h=gH(),i=h.findIndex(x=>x.id===epTarget);if(i>-1){h[i].em=e;sH(h)}closeEP();renderHabits()}
+function addHabit(){const h=gH();h.push({id:'h'+Date.now(),em:'⭐',name:'',days:[0,0,0,0,0,0,0]});sH(h);renderHabits();setTimeout(()=>{const ins=document.querySelectorAll('.h-ni');if(ins.length)ins[ins.length-1].focus()},50)}
+function delHabit(hid){sH(gH().filter(x=>x.id!==hid));renderHabits()}
+function editHN(hid,v){const h=gH(),i=h.findIndex(x=>x.id===hid);if(i>-1){h[i].name=v;sH(h)}}
+function togDay(hid,di){const h=gH(),i=h.findIndex(x=>x.id===hid);if(i>-1){h[i].days[di]=h[i].days[di]?0:1;sH(h);renderHabits();addXP(3);checkAch()}}
+function renderHabits(){
+  const h=gH(),tod=new Date().getDay()===0?6:new Date().getDay()-1;
+  let tD=0,wD=0;h.forEach(x=>{if(x.days[tod])tD++;x.days.forEach(d=>{if(d)wD++})});
+  const pct=h.length?Math.round(tD/h.length*100):0;
+  document.getElementById('h-pct').textContent=pct+'%';document.getElementById('h-fill').style.width=pct+'%';
+  document.getElementById('hs-today').textContent=tD+'/'+h.length;document.getElementById('hs-week').textContent=wD;
+  let str=0;for(let i=tod;i>=0;i--){if(h.every(x=>x.days[i]))str++;else break}
+  document.getElementById('hs-str').textContent=str+'🔥';
+  const list=document.getElementById('habits-list');list.innerHTML='';
+  h.forEach(hb=>{
+    const card=document.createElement('div');card.className='hcard';
+    const st=hb.days.filter(Boolean).length;
+    card.innerHTML=`<div class="hc-top"><div class="h-ico" onclick="openEP('${hb.id}')">${hb.em}</div><input class="h-ni" value="${hb.name.replace(/"/g,'&quot;')}" placeholder="Əдет атауы..." onchange="editHN('${hb.id}',this.value)"/><span class="h-streak">${st}/7 күн</span><button class="h-del" onclick="delHabit('${hb.id}')">×</button></div><div class="dg">${DKK.map((d,i)=>`<div class="dw"><div class="dl">${d}</div><div class="db${hb.days[i]?' done':''}" onclick="togDay('${hb.id}',${i})"></div></div>`).join('')}</div>`;
+    list.appendChild(card);
+  });
+}
+
+// ═══ TIMER ═══
+const DS={focus:25,short:5,mid:10,long:20,auto:false,sound:true};
+function gTS(){return Object.assign({},DS,uGet('tm_set',{}))}
+function saveTmSet(){const st=gTS();['focus','short','mid','long'].forEach(k=>{const v=parseInt(document.getElementById('s-'+k)?.value);if(v>0)st[k]=v});uSet('tm_set',st)}
+function applyTmSet(){saveTmSet();tmReset();renderPhaseBar()}
+function togTmSet(){const b=document.getElementById('tmset-body'),c=document.getElementById('tmset-chev');const o=b.style.display==='block';b.style.display=o?'none':'block';c.style.transform=o?'':'rotate(90deg)'}
+function loadTmUI(){const st=gTS();['focus','short','mid','long'].forEach(k=>{const el=document.getElementById('s-'+k);if(el)el.value=st[k]});setTog('auto',st.auto);setTog('sound',st.sound)}
+function setTog(id,on){const el=document.getElementById('tg-'+id),kn=document.getElementById('tg-'+id+'-k');if(!el)return;el.style.background=on?'var(--blue)':'rgba(0,0,0,.1)';kn.style.left=on?'21px':'3px'}
+function togAuto(){const st=gTS();st.auto=!st.auto;uSet('tm_set',st);setTog('auto',st.auto)}
+function togSound(){const st=gTS();st.sound=!st.sound;uSet('tm_set',st);setTog('sound',st.sound)}
+const PCOL={focus:'#0071e3',short:'#30d158',mid:'#ff9f0a',long:'#bf5af2'};
+const PPILL={focus:'pill-blue',short:'pill-green',mid:'pill-orange',long:'pill-purple'};
+const PNAME={focus:'🧠 Фокус',short:'☕ Қысқа',mid:'🌿 Орта',long:'🌙 Ұзын'};
+function buildSeq(st){return[{type:'focus',label:'Фокус 1',mins:st.focus},{type:'short',label:'Қысқа 1',mins:st.short},{type:'focus',label:'Фокус 2',mins:st.focus},{type:'short',label:'Қысқа 2',mins:st.short},{type:'focus',label:'Фокус 3',mins:st.focus},{type:'mid',label:'Орта',mins:st.mid},{type:'focus',label:'Фокус 4',mins:st.focus},{type:'long',label:'Ұзын',mins:st.long}]}
+let tmSeq=[],tmIdx=0,tmSec=0,tmTotal=0,tmRunning=false,tmTick=null;
+function tmInit(){const st=gTS();tmSeq=buildSeq(st);tmIdx=0;tmRunning=false;clearInterval(tmTick);tmLoad();renderPhaseBar();renderCycleDots();loadTmUI();renderTmStats()}
+function tmLoad(){const ph=tmSeq[tmIdx];tmSec=ph.mins*60;tmTotal=ph.mins*60;tmRunning=false;clearInterval(tmTick);const b=document.getElementById('tm-btn');if(b){b.textContent='▶';b.style.background=PCOL[ph.type];b.style.boxShadow=`0 4px 20px ${PCOL[ph.type]}66`}updateRing();updateTmDisp();updateTmPill();renderCycleDots()}
+function updateTmDisp(){const m=Math.floor(tmSec/60),s=tmSec%60;const d=document.getElementById('tm-disp');if(d)d.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');const ph=tmSeq[tmIdx];const sb=document.getElementById('tm-sub2');if(sb)sb.textContent=tmRunning?ph.label+' жүріп жатыр…':'Дайынсың ба?';document.title=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} · ${ph.label}`}
+function updateRing(){const ph=tmSeq[tmIdx],ratio=tmSec/tmTotal,off=553*(1-ratio),arc=document.getElementById('tm-ring');if(arc){arc.style.stroke=PCOL[ph.type];arc.style.strokeDashoffset=off}}
+function updateTmPill(){const ph=tmSeq[tmIdx],pill=document.getElementById('tm-pill');if(pill){pill.textContent=PNAME[ph.type];pill.className='pill '+PPILL[ph.type];pill.style.fontSize='13px';pill.style.padding='5px 16px'}const r=document.getElementById('tm-rlbl');if(r)r.textContent=`${tmIdx+1} / ${tmSeq.length}`}
+function tmToggle(){if(tmRunning){tmRunning=false;clearInterval(tmTick);const b=document.getElementById('tm-btn');if(b)b.textContent='▶'}else{tmRunning=true;const b=document.getElementById('tm-btn');if(b)b.textContent='⏸';tmTick=setInterval(()=>{if(tmSec>0){tmSec--;updateTmDisp();updateRing()}else phDone()},1000)}}
+function phDone(){clearInterval(tmTick);tmRunning=false;const ph=tmSeq[tmIdx];if(ph.type==='focus'){uSet('tm_done',(uGet('tm_done',0)+1));uSet('tm_focus',(uGet('tm_focus',0)+ph.mins));uSet('tm_today',(uGet('tm_today',0)+1));renderTmStats();addXP(20);checkAch()}if(gTS().sound)playBeep(ph.type);const nx=tmIdx+1;if(nx<tmSeq.length){tmIdx=nx;if(gTS().auto){tmLoad();setTimeout(tmToggle,400)}else tmLoad()}else{tmIdx=0;tmLoad();toast('🎉 Цикл аяқталды!')}renderPhaseBar();renderCycleDots()}
+function tmNext(){if(tmIdx<tmSeq.length-1){tmIdx++;tmLoad()}}
+function tmPrev(){if(tmIdx>0){tmIdx--;tmLoad()}}
+function tmReset(){clearInterval(tmTick);tmRunning=false;tmIdx=0;tmInit()}
+function renderPhaseBar(){const bar=document.getElementById('phase-bar');if(!bar)return;bar.innerHTML='';tmSeq.forEach((ph,i)=>{const d=document.createElement('div');const act=i===tmIdx,done=i<tmIdx;d.style.cssText=`flex:1;height:4px;border-radius:4px;transition:all .3s;cursor:pointer;background:${done||act?PCOL[ph.type]:'rgba(0,0,0,.08)'};opacity:${act?1:done?.6:.35}`;if(act)d.style.boxShadow=`0 0 8px ${PCOL[ph.type]}88`;d.title=ph.label;d.onclick=()=>{tmIdx=i;tmLoad()};bar.appendChild(d)})}
+function renderCycleDots(){const c=document.getElementById('cycle-dots');if(!c)return;c.innerHTML='';tmSeq.forEach((ph,i)=>{const done=i<tmIdx,act=i===tmIdx;const d=document.createElement('div');d.style.cssText=`flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer`;d.onclick=()=>{tmIdx=i;tmLoad()};const dot=document.createElement('div');dot.style.cssText=`width:${act?14:10}px;height:${act?14:10}px;border-radius:50%;background:${done||act?PCOL[ph.type]:'rgba(0,0,0,.08)'};transition:all .3s;${act?`box-shadow:0 0 10px ${PCOL[ph.type]}88`:''}`;const lbl=document.createElement('div');lbl.style.cssText=`font-size:9px;color:${act?PCOL[ph.type]:'var(--t3)'};font-weight:${act?700:400};text-align:center`;lbl.textContent=ph.label.substring(0,3);d.appendChild(dot);d.appendChild(lbl);c.appendChild(d)})}
+function renderTmStats(){document.getElementById('ts-done').textContent=uGet('tm_done',0);document.getElementById('ts-focus').textContent=uGet('tm_focus',0)+'м';document.getElementById('ts-today').textContent=uGet('tm_today',0)}
+function playBeep(type){try{const ac=new(window.AudioContext||window.webkitAudioContext)(),fr={focus:[880,660],short:[440,550],mid:[330,440],long:[220,330]};(fr[type]||fr.focus).forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=f;o.type='sine';const t=ac.currentTime+i*.18;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+.04);g.gain.exponentialRampToValueAtTime(.001,t+.55);o.start(t);o.stop(t+.6)})}catch(e){}}
+
+// ═══ XP & ACHIEVEMENTS ═══
+const ACH_LIST=[
+  {id:'a1',ico:'🌅',name:'Таң оятушы',desc:'Алғашқы əдетті бастады',xp:50,check:()=>gH().some(h=>h.days.some(Boolean))},
+  {id:'a2',ico:'📚',name:'Білім іздеуші',desc:'5 тақырып аяқтады',xp:100,check:()=>WEEKS.reduce((s,w)=>s+gT(w.id).filter(x=>x.done).length,0)>=5},
+  {id:'a3',ico:'🔥',name:'Дала жолбарысы',desc:'7 күн қатарынан əдет',xp:200,check:()=>{const h=gH();let str=0;for(let i=6;i>=0;i--){if(h.every(x=>x.days[i]))str++;else break};return str>=7}},
+  {id:'a4',ico:'⏱',name:'Помодоро шебері',desc:'10 помодоро аяқтады',xp:150,check:()=>uGet('tm_done',0)>=10},
+  {id:'a5',ico:'🏆',name:'Шын чемпион',desc:'50% тақырып аяқтады',xp:300,check:()=>{let tot=0,dn=0;WEEKS.forEach(w=>{const t=gT(w.id);tot+=t.length;dn+=t.filter(x=>x.done).length});return tot>0&&dn/tot>=.5}},
+  {id:'a6',ico:'💎',name:'Алтын деңгей',desc:'500 XP жинады',xp:500,check:()=>uGet('xp',0)>=500},
+  {id:'a7',ico:'🚀',name:'Стратег',desc:'Барлық аялдаманы ашты',xp:200,check:()=>WEEKS.every(w=>gT(w.id).some(x=>x.done))},
+  {id:'a8',ico:'🌙',name:'Зерде иесі',desc:'3 сағат фокус',xp:250,check:()=>uGet('tm_focus',0)>=180},
+  {id:'a9',ico:'📄',name:'Кітапхана',desc:'5 материал жасады',xp:100,check:()=>Object.keys(getFiles()).length>=5},
+  {id:'a10',ico:'⚡',name:'Quiz маэстро',desc:'Quiz-де 90% алды',xp:200,check:()=>false},
+];
+const LEVELS=[{min:0,name:'Бастаушы',ico:'⭐'},{min:100,name:'Оқушы',ico:'📗'},{min:300,name:'Ізденуші',ico:'🔍'},{min:600,name:'Шебер',ico:'🎯'},{min:1000,name:'Чемпион',ico:'🏆'},{min:2000,name:'Аңыз',ico:'💎'}];
+function addXP(amt){uSet('xp',(uGet('xp',0)+amt))}
+function checkAch(){
+  const unlocked=uGet('ach_unlocked',[]);let changed=false;
+  ACH_LIST.forEach(a=>{if(!unlocked.includes(a.id)&&a.check()){unlocked.push(a.id);addXP(a.xp);toast('🏅 '+a.name+' жетістігі! +'+a.xp+' XP');changed=true}});
+  if(changed){uSet('ach_unlocked',unlocked);renderAch()}
+}
+function renderAch(){
+  const unlocked=uGet('ach_unlocked',[]),xp=uGet('xp',0);
+  const lvl=LEVELS.reduce((a,l,i)=>xp>=l.min?i:a,0);
+  const nextLvl=LEVELS[lvl+1],curLvlXP=LEVELS[lvl].min,nextXP=nextLvl?nextLvl.min:LEVELS[lvl].min+1000;
+  const prog=Math.min(100,Math.round((xp-curLvlXP)/(nextXP-curLvlXP)*100));
+  document.getElementById('xp-badge').textContent=LEVELS[lvl].ico;
+  document.getElementById('xp-level').textContent=(lvl+1)+'-деңгей';
+  document.getElementById('xp-title').textContent=LEVELS[lvl].name;
+  document.getElementById('xp-next').textContent=xp+' / '+(nextLvl?nextXP:'MAX')+' XP';
+  document.getElementById('xp-fill').style.width=prog+'%';
+  const g=document.getElementById('ach-grid');if(!g)return;g.innerHTML='';
+  ACH_LIST.forEach(a=>{const un=unlocked.includes(a.id);const d=document.createElement('div');d.className='ach'+(un?'':' locked');d.innerHTML=`<span class="ach-ico">${a.ico}</span><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div><div style="font-size:10px;color:var(--orange);font-weight:600;margin-top:6px">+${a.xp} XP</div>`;g.appendChild(d)});
+}
+
+// ═══ STATS ═══
+function renderStats(){
+  const h=gH();let wD=0;h.forEach(x=>x.days.forEach(d=>{if(d)wD++}));
+  document.getElementById('st-hb').textContent=wD;
+  document.getElementById('st-topics').textContent=WEEKS.reduce((s,w)=>s+gT(w.id).filter(x=>x.done).length,0);
+  document.getElementById('st-pomo').textContent=uGet('tm_done',0);
+  document.getElementById('st-focus').textContent=uGet('tm_focus',0)+'м';
+  const chart=document.getElementById('week-chart');if(!chart)return;chart.innerHTML='';
+  const max=Math.max(...DKK.map((_,i)=>h.reduce((s,hb)=>s+(hb.days[i]?1:0),0)),1);
+  DKK.forEach((d,i)=>{const val=h.reduce((s,hb)=>s+(hb.days[i]?1:0),0),pct=Math.round(val/max*100);const col=document.createElement('div');col.className='bar-col';col.innerHTML=`<div class="bar-val">${val}</div><div class="bar-body" style="height:${Math.max(pct,4)}%"></div><div class="bar-lbl">${d}</div>`;chart.appendChild(col)});
+  const sp=document.getElementById('subj-prog');if(!sp)return;sp.innerHTML='';
+  const subjs={mat:{l:'Математика',c:'var(--blue)'},his:{l:'Тарих',c:'var(--orange)'},inf:{l:'Информатика',c:'var(--purple)'}};
+  Object.entries(subjs).forEach(([s,{l,c}])=>{let tot=0,dn=0;WEEKS.forEach(w=>gT(w.id).forEach(t=>{if(t.s===s){tot++;if(t.done)dn++}}));const p=tot?Math.round(dn/tot*100):0;const row=document.createElement('div');row.style.cssText='margin-bottom:12px';row.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;margin-bottom:4px"><span>${l}</span><span style="color:var(--t2)">${dn}/${tot} · ${p}%</span></div><div class="prog"><div class="pf" style="width:${p}%;background:${c}"></div></div>`;sp.appendChild(row)});
+  // Lofi bars
+  const lv=document.getElementById('lofi-vis');if(lv&&!lv.children.length){for(let i=0;i<7;i++){const b=document.createElement('div');b.className='lofi-bar';b.style.cssText=`height:${20+Math.random()*28}px;animation-delay:${i*.08}s;animation-play-state:paused`;lv.appendChild(b)}}
+}
+
+// ═══ LO-FI ═══
+const LOFI_TRACKS=[{name:'Rainy Lounge',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},{name:'Late Night Study',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},{name:'Chill Beats',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'}];
+let lofiAudio=null,lofiIdx=0,lofiPlaying=false;
+function lofToggle(){
+  if(!lofiAudio){lofiAudio=new Audio();lofiAudio.loop=true;lofiAudio.volume=.6}
+  if(lofiPlaying){lofiAudio.pause();lofiPlaying=false;document.getElementById('lofi-btn').textContent='▶';document.getElementById('lofi-status').textContent='Тоқтатылған';document.getElementById('lofi-status').className='pill pill-orange';document.querySelectorAll('.lofi-bar').forEach(b=>b.style.animationPlayState='paused')}
+  else{lofiAudio.src=LOFI_TRACKS[lofiIdx].url;lofiAudio.play().catch(()=>{});lofiPlaying=true;document.getElementById('lofi-btn').textContent='⏸';document.getElementById('lofi-status').textContent='Ойнап жатыр';document.getElementById('lofi-status').className='pill pill-green';document.getElementById('lofi-track').textContent=LOFI_TRACKS[lofiIdx].name;document.querySelectorAll('.lofi-bar').forEach(b=>b.style.animationPlayState='running')}
+}
+function lofNext(){lofiIdx=(lofiIdx+1)%LOFI_TRACKS.length;if(lofiPlaying){lofiAudio.src=LOFI_TRACKS[lofiIdx].url;lofiAudio.play().catch(()=>{});document.getElementById('lofi-track').textContent=LOFI_TRACKS[lofiIdx].name}}
+function lofPrev(){lofiIdx=(lofiIdx-1+LOFI_TRACKS.length)%LOFI_TRACKS.length;if(lofiPlaying){lofiAudio.src=LOFI_TRACKS[lofiIdx].url;lofiAudio.play().catch(()=>{});document.getElementById('lofi-track').textContent=LOFI_TRACKS[lofiIdx].name}}
+function lofVol(v){if(lofiAudio)lofiAudio.volume=v/100}
+
+// ═══ PLANNER ═══
+function showPlan(id,btn){document.querySelectorAll('.seg-b').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('plan-monthly').style.display=id==='monthly'?'':'none';document.getElementById('plan-weekly').style.display=id==='weekly'?'':'none';if(id==='monthly')renderMonth();if(id==='weekly')renderWeek()}
+let curM=new Date().getMonth(),curY=new Date().getFullYear();
+function chM(d){curM+=d;if(curM>11){curM=0;curY++}if(curM<0){curM=11;curY--}renderMonth()}
+function renderMonth(){
+  document.getElementById('m-lbl').textContent=MKK[curM]+' '+curY;
+  const g=document.getElementById('cal-grid');g.innerHTML='';
+  DKK.forEach(d=>{const h=document.createElement('div');h.style.cssText='font-size:11px;font-weight:600;color:var(--t3);text-align:center;padding:5px 2px';h.textContent=d;g.appendChild(h)});
+  const fd=new Date(curY,curM,1).getDay(),off=fd===0?6:fd-1,dim=new Date(curY,curM+1,0).getDate(),today=new Date();
+  for(let i=0;i<off;i++){const e=document.createElement('div');e.style.cssText='background:transparent;border-color:transparent;border-radius:10px;padding:6px;min-height:68px';g.appendChild(e)}
+  for(let d=1;d<=dim;d++){
+    const cell=document.createElement('div'),isT=d===today.getDate()&&curM===today.getMonth()&&curY===today.getFullYear();
+    cell.style.cssText=`background:var(--s1);border:${isT?'1.5px solid var(--blue)':'.5px solid var(--bd)'};border-radius:10px;padding:6px;min-height:68px;cursor:pointer;transition:all .2s`;
+    cell.onmouseenter=()=>cell.style.boxShadow='var(--sh)';cell.onmouseleave=()=>cell.style.boxShadow='none';
+    const key=`md_${curY}_${curM}_${d}`,note=uGet(key,'');
+    const numEl=document.createElement('div');numEl.style.cssText='font-size:13px;font-weight:500;color:var(--t2);line-height:1';numEl.textContent=d;
+    if(isT){numEl.style.cssText='background:var(--blue);color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px'}
+    cell.appendChild(numEl);
+    const noteEl=document.createElement('div');noteEl.style.cssText='font-size:10px;color:var(--blue);font-weight:500;margin-top:3px;line-height:1.4';noteEl.textContent=note;cell.appendChild(noteEl);
+    const ta=document.createElement('textarea');ta.style.cssText='display:none;width:100%;background:transparent;border:none;font-size:10px;color:var(--blue);font-weight:500;outline:none;resize:none;min-height:36px;margin-top:3px;font-family:inherit;line-height:1.4';ta.value=note;
+    cell.appendChild(ta);
+    cell.ondblclick=()=>{noteEl.style.display='none';ta.style.display='block';ta.focus();ta.onblur=()=>{uSet(key,ta.value);noteEl.textContent=ta.value;ta.style.display='none';noteEl.style.display='block'}};
+    g.appendChild(cell);
+  }
+}
+let wOff=0;
+function chW(d){wOff+=d;renderWeek()}
+function renderWeek(){
+  const now=new Date(),dow=now.getDay()===0?6:now.getDay()-1,mon=new Date(now);
+  mon.setDate(now.getDate()-dow+wOff*7);const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const fmt=d=>`${d.getDate()} ${MKK[d.getMonth()].slice(0,3)}`;
+  document.getElementById('w-lbl').textContent=fmt(mon)+' – '+fmt(sun);
+  const g=document.getElementById('weekly-grid');g.innerHTML='';
+  const dNames=['Дүйсенбі','Сейсенбі','Сəрсенбі','Бейсенбі','Жұма','Сенбі','Жексенбі'];
+  for(let i=0;i<7;i++){
+    const date=new Date(mon);date.setDate(mon.getDate()+i);
+    const isT=date.toDateString()===now.toDateString()&&wOff===0;
+    const key=`wt_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`,tasks=uGet(key,[]);
+    const el=document.createElement('div');el.style.cssText='background:var(--s1);backdrop-filter:var(--blur);border:.5px solid var(--bd);border-radius:var(--r);margin-bottom:8px;overflow:hidden;box-shadow:var(--sh)';
+    el.innerHTML=`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:.5px solid var(--bd);background:rgba(0,0,0,.02)"><span style="font-size:14px;font-weight:600;min-width:36px">${dNames[i].slice(0,3)}</span><span style="font-size:12px;color:var(--t2)">${date.getDate()} ${MKK[date.getMonth()]}</span>${isT?'<span style="background:var(--blue);color:white;font-size:10px;font-weight:600;padding:2px 10px;border-radius:100px;margin-left:auto">Бүгін</span>':''}</div><div style="padding:10px 16px;display:flex;flex-direction:column;gap:4px" id="wt_${key}">${tasks.map((t,ti)=>`<div style="display:flex;align-items:center;gap:9px"><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--bd2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .2s;${t.done?'background:var(--green);border-color:var(--green);color:white':''}" onclick="togWT('${key}',${ti})">${t.done?'✓':''}</div><input style="flex:1;background:transparent;border:none;font-size:13px;color:${t.done?'var(--t3)':'var(--t1)'};outline:none;font-family:inherit;${t.done?'text-decoration:line-through':''}" value="${(t.text||'').replace(/"/g,'&quot;')}" placeholder="Тапсырма..." onchange="editWT('${key}',${ti},this.value)"/><button style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px" onmouseenter="this.style.color='var(--red)'" onmouseleave="this.style.color='var(--t3)'" onclick="delWT('${key}',${ti})">×</button></div>`).join('')}</div><div style="padding:0 16px 10px"><button style="background:none;border:none;font-size:12px;color:var(--t3);cursor:pointer;font-family:inherit;transition:color .15s" onmouseenter="this.style.color='var(--blue)'" onmouseleave="this.style.color='var(--t3)'" onclick="addWT('${key}')">+ тапсырма қос</button></div>`;
+    g.appendChild(el);
+  }
+}
+function addWT(key){const t=uGet(key,[]);t.push({text:'',done:false});uSet(key,t);renderWeek();setTimeout(()=>{const ins=document.querySelectorAll(`#wt_${key} input`);if(ins.length)ins[ins.length-1].focus()},40)}
+function togWT(key,i){const t=uGet(key,[]);if(t[i]){t[i].done=!t[i].done;uSet(key,t);renderWeek()}}
+function editWT(key,i,v){const t=uGet(key,[]);if(t[i]){t[i].text=v;uSet(key,t)}}
+function delWT(key,i){const t=uGet(key,[]);t.splice(i,1);uSet(key,t);renderWeek()}
+</script>
+</body>
+</html>
